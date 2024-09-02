@@ -1,0 +1,54 @@
+conda clean --packages
+conda clean --all
+
+conda activate yolov5
+E:
+cd saves/elte/final_project/yolov5/yolov5
+
+
+python -c "import torch; print(torch.__version__)"
+python -c "import torch.ao"
+
+
+pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu113
+pip install torch==1.10.0+cu113 torchvision==0.11.0+cu113 torchaudio==0.10.0+cu113 --extra-index-url https://download.pytorch.org/whl/cu113
+
+
+//Train
+python train.py --img 640 --batch 16 --epochs 50 --data dataset/dataset.yaml --weights yolov5s.pt --cache
+
+//First GPU
+python train.py --img 640 --batch 8 --epochs 50 --data dataset/dataset.yaml --weights yolov5s.pt --cache --device 0 --project E:/yolov5_runs --workers 0
+
+
+
+//Run detection
+python detect.py --weights yolov5s.pt --img 640 --conf 0.25 --source dataset/images/train/potholes0.png
+
+//Run own trained model
+python detect.py --weights E:/yolov5_runs/exp8/weights/best.pt --img 640 --conf 0.65 --source dataset/images/train/potholes0.png
+
+
+
+C:\Users\Kerachi\anaconda3\envs\yolov5\Lib\site-packages\torch\utils\tensorboard\summary.py
+Image.Resampling.LANCZOS
+
+
+
+TO DO:
+install postgresql      --OK
+detect.py run for ever
+    wait 1 secod if the folder is empty
+    on successful detection update the database status to detected
+
+sever.py should only response if the detection is successful or verified
+    always check the database for what to
+        delete (older than 5 min),
+        what to send to user (successful detection -> ask for verify)
+        
+database
+    username, image, upload_time, status
+    
+    status: uploaded -> detected -> verified
+    
+set up github 
