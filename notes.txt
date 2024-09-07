@@ -3,7 +3,7 @@ conda clean --all
 
 conda activate yolov5
 E:
-cd saves/elte/final_project/yolov5/yolov5
+cd saves/elte/final_project/yolov5
 
 
 python -c "import torch; print(torch.__version__)"
@@ -28,6 +28,8 @@ python detect.py --weights yolov5s.pt --img 640 --conf 0.25 --source dataset/ima
 //Run own trained model
 python detect.py --weights E:/yolov5_runs/exp8/weights/best.pt --img 640 --conf 0.65 --source dataset/images/train/potholes0.png
 
+//Run forever
+python yolov5\detect.py --weights E:/yolov5_runs/exp8/weights/best.pt --forever
 
 
 C:\Users\Kerachi\anaconda3\envs\yolov5\Lib\site-packages\torch\utils\tensorboard\summary.py
@@ -51,4 +53,4 @@ database
     
     status: uploaded -> detected -> verified
     
-set up github 
+set up github           --OK
