@@ -11,9 +11,8 @@ def get_pothole_coordinates():
             return jsonify({"error": "Database connection failed"}), 500
 
         cursor = conn.cursor()
-        # Query to fetch latitude and longitude for images with 'DETECTED' status (id 3)
         cursor.execute("""
-            SELECT uploaded_image_gps_location_latitude, uploaded_image_gps_location_longitude
+            SELECT uploaded_image_id, uploaded_image_gps_location_latitude, uploaded_image_gps_location_longitude
             FROM uploaded_image
             WHERE uploaded_image_status_id = 3
         """)
@@ -24,7 +23,11 @@ def get_pothole_coordinates():
 
         # Format the results into a list of dictionaries
         coordinates = [
-            {"latitude": row[0], "longitude": row[1]} for row in potholes
+            {
+                "id": row[0],
+                "latitude": row[1],
+                "longitude": row[2]
+            } for row in potholes
         ]
 
         return jsonify(coordinates), 200

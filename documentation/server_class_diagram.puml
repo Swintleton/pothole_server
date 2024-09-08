@@ -55,6 +55,11 @@ class PotholeCoordinatesRoute {
   + get_pothole_coordinates(): List
 }
 
+class PotholeRoute {
+  + add_pothole(): void
+  + edit_pothole(id): void
+}
+
 FlaskApp -down-> Database
 FlaskApp -down-> Auth
 FlaskApp -down-> DetectionService
@@ -65,6 +70,7 @@ FlaskApp -down-> UploadFrameRoute
 FlaskApp -down-> LoginRoute
 FlaskApp -down-> LogoutRoute
 FlaskApp -down-> PotholeCoordinatesRoute
+FlaskApp -down-> PotholeRoute
 
 together {
     WebSocketHandler -right-> Auth : Uses
@@ -75,6 +81,7 @@ together {
     LoginRoute -down-> Database : Uses
     LogoutRoute -down-> Database : Uses
     PotholeCoordinatesRoute -down-> Database : Uses
+    PotholeRoute -down-> Database : Uses
 }
 
 @enduml

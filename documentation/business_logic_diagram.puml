@@ -1,0 +1,34 @@
+@startuml
+actor User as U
+
+U --> FlutterApp : Upload Image
+U --> FlutterApp : Log in
+U --> FlutterApp : View Potholes
+
+box "Client Side (Flutter)"
+    FlutterApp --> FlaskServer : POST /login
+    FlutterApp --> FlaskServer : POST /upload_frame
+    FlutterApp --> FlaskServer : GET /potholes
+    FlutterApp -> WebSocketService : WebSocket connect for confirmation
+end box
+
+box "Server Side (Flask)"
+    FlaskServer --> Database : Authenticate user
+    FlaskServer --> Database : Insert uploaded image
+    FlaskServer --> Database : Fetch potholes
+    FlaskServer --> DetectionService : Detect pothole in image
+    DetectionService --> FlaskServer : Pothole detected
+    FlaskServer --> WebSocketService : Send confirmation request
+
+    WebSocketService --> User : Confirm detection
+    WebSocketService --> FlaskServer : Receive confirmation
+    FlaskServer --> Database : Update image status to PROCESSED
+end box
+
+box "Database (PostgreSQL)"
+    Database --> FlaskServer : Return user data
+    Database --> FlaskServer : Save uploaded image data
+    Database --> FlaskServer : Update pothole detection status
+end box
+
+@enduml

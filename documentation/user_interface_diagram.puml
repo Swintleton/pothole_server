@@ -1,0 +1,51 @@
+@startuml
+!define RECTANGLE class
+
+RECTANGLE "Login Screen" as Login {
+  - Username field
+  - Password field
+  - Login button
+}
+
+RECTANGLE "Home Screen" as Home {
+  - "Welcome" text
+  - "Pothole Detector" title
+  - Navigation buttons to Map/Camera
+}
+
+RECTANGLE "Map Screen" as Map {
+  - Google Map
+  - Pothole markers
+  - Long-press to add a new pothole
+}
+
+RECTANGLE "Camera Screen" as Camera {
+  - Camera preview
+  - Capture button
+  - Upload functionality
+}
+
+RECTANGLE "Map Confirmation Dialog" as MapConfirm {
+  - Pothole detection confirmation
+  - "Yes" / "No" buttons
+}
+
+RECTANGLE "Camera Detection Confirmation Dialog" as CameraConfirm {
+  - Pothole detected by AI
+  - Confirm or reject detection
+}
+
+RECTANGLE "Pothole Edit Dialog" as Edit {
+  - Pothole details (e.g., Lat/Long)
+  - Save or Cancel button
+}
+
+Login --> Home : Login success
+Home --> Map : Navigate to map
+Home --> Camera : Navigate to camera
+Map --> MapConfirm : On marker tap
+Map --> Edit : On marker long-press
+MapConfirm --> Map : Save or discard location and return to map
+Camera --> CameraConfirm : AI detects pothole, user confirms detection
+CameraConfirm --> Camera : Confirm detection and return to camera screen
+@enduml

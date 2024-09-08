@@ -20,7 +20,13 @@ class GoogleMapWidget {
   + initState(): void
   + _requestPermission(): Future<void>
   + _fetchPotholeCoordinates(): Future<void>
-  + _onMapCreated(controller: GoogleMapController): void
+  + _onMapCreated(GoogleMapController controller): void
+  + _onMapLongPressed(LatLng latLng): void
+  + _addPothole(LatLng latLng): Future<void>
+  + _editPothole(int id, double latitude, double longitude): void
+  + _showAddPotholeDialog(LatLng latLng): Future<void>
+  + _showEditPotholeDialog(int id, LatLng latLng): Future<void>
+  + _savePotholeEdit(int id, LatLng latLng): Future<void>
   + build(context: BuildContext): Widget
 }
 
@@ -39,12 +45,9 @@ class _CameraPageState {
   + initState(): void
   + dispose(): void
   + initializeCamera(): Future<void>
-  + captureFrameFromStream(): void
   + captureFrame(CameraImage image): Future<void>
   + connectWebSocket(): void
   + showConfirmationDialog(String filename): Future<void>
-  + cropCenterSquare(img.Image src, int size): img.Image
-  + convertYUV420ToImage(CameraImage image): img.Image
 }
 
 MyHomePage -- LoginPage : "redirects to"
