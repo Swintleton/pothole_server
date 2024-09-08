@@ -1,0 +1,56 @@
+@startuml
+
+class MyHomePage {
+  + title: String
+  + build(context: BuildContext): Widget
+  + _logout(): Future<void>
+  + _loadUserInfo(): Future<void>
+}
+
+class LoginPage {
+  + build(context: BuildContext): Widget
+  + _login(): Future<void>
+}
+
+class MapPage {
+  + build(context: BuildContext): Widget
+}
+
+class GoogleMapWidget {
+  + initState(): void
+  + _requestPermission(): Future<void>
+  + _fetchPotholeCoordinates(): Future<void>
+  + _onMapCreated(controller: GoogleMapController): void
+  + build(context: BuildContext): Widget
+}
+
+class CameraPage {
+  + build(context: BuildContext): Widget
+}
+
+class _CameraPageState {
+  + controller: CameraController
+  + cameras: List<CameraDescription>
+  + isCameraInitialized: bool
+  + isUploading: bool
+  + timer: Timer?
+  + channel: WebSocketChannel
+
+  + initState(): void
+  + dispose(): void
+  + initializeCamera(): Future<void>
+  + captureFrameFromStream(): void
+  + captureFrame(CameraImage image): Future<void>
+  + connectWebSocket(): void
+  + showConfirmationDialog(String filename): Future<void>
+  + cropCenterSquare(img.Image src, int size): img.Image
+  + convertYUV420ToImage(CameraImage image): img.Image
+}
+
+MyHomePage -- LoginPage : "redirects to"
+MyHomePage -- GoogleMapWidget : "displays map"
+MyHomePage -- CameraPage : "displays camera"
+
+CameraPage --> _CameraPageState : "has state"
+
+@enduml

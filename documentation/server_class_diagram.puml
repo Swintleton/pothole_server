@@ -1,0 +1,80 @@
+@startuml
+left to right direction
+
+class FlaskApp {
+  + run(host, port): void
+  + register_blueprint(bp): void
+  + init_app(app): void
+}
+
+class Database {
+  + get_connection(): psycopg2.Connection
+}
+
+class Auth {
+  - token: String
+  + verify_token(): bool
+}
+
+class DetectionService {
+  + process_detection(image_id, filename, detection_id): void
+  + send_detection_confirmation(filename, detection_name): bool
+  + confirm_detection(image_id, filename): void
+  + delete_image_and_record(image_id, filename): void
+}
+
+class ImageService {
+  + process_image(file, filename): String
+  + correct_image_orientation(image): void
+  + UPLOAD_FOLDER: String
+  + CONFIRMED_FOLDER: String
+}
+
+class WebSocketHandler {
+  + confirm(ws): void
+  + handle_user_confirmation(data): void
+}
+
+class MonitoringService {
+  + monitor_and_confirm_detections(): void
+}
+
+class UploadFrameRoute {
+  + upload_frame(): void
+}
+
+class LoginRoute {
+  + login(): void
+}
+
+class LogoutRoute {
+  + logout(): void
+}
+
+class PotholeCoordinatesRoute {
+  + get_pothole_coordinates(): List
+}
+
+FlaskApp -down-> Database
+FlaskApp -down-> Auth
+FlaskApp -down-> DetectionService
+FlaskApp -down-> ImageService
+FlaskApp -down-> WebSocketHandler
+FlaskApp -down-> MonitoringService
+FlaskApp -down-> UploadFrameRoute
+FlaskApp -down-> LoginRoute
+FlaskApp -down-> LogoutRoute
+FlaskApp -down-> PotholeCoordinatesRoute
+
+together {
+    WebSocketHandler -right-> Auth : Uses
+    DetectionService -down-> Database : Uses
+    UploadFrameRoute -down-> Auth : Uses
+    UploadFrameRoute -down-> ImageService : Uses
+    UploadFrameRoute -down-> Database : Uses
+    LoginRoute -down-> Database : Uses
+    LogoutRoute -down-> Database : Uses
+    PotholeCoordinatesRoute -down-> Database : Uses
+}
+
+@enduml

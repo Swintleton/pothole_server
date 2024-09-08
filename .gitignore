@@ -161,10 +161,8 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-pothole_dataset/
-pothole-detection-DatasetNinja/
+
 uploaded_frames/
 yolov5/
-pothole-detection-DatasetNinja.tar
 potholes.png
 
