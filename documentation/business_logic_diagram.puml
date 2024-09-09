@@ -4,6 +4,7 @@ actor User as U
 U --> FlutterApp : Upload Image
 U --> FlutterApp : Log in
 U --> FlutterApp : View Potholes
+U --> FlutterApp : Confirm Detection
 
 box "Client Side (Flutter)"
     FlutterApp --> FlaskServer : POST /login
@@ -16,19 +17,22 @@ box "Server Side (Flask)"
     FlaskServer --> Database : Authenticate user
     FlaskServer --> Database : Insert uploaded image
     FlaskServer --> Database : Fetch potholes
-    FlaskServer --> DetectionService : Detect pothole in image
+    FlaskServer --> DetectionService : Process detection in image
     DetectionService --> FlaskServer : Pothole detected
     FlaskServer --> WebSocketService : Send confirmation request
 
-    WebSocketService --> User : Confirm detection
-    WebSocketService --> FlaskServer : Receive confirmation
-    FlaskServer --> Database : Update image status to PROCESSED
+    WebSocketService --> User : Confirm detection via WebSocket
+    User --> WebSocketService : Confirmation Response (Yes/No)
+    WebSocketService --> DetectionService : Forward confirmation
+    DetectionService --> FlaskServer : Update image status
+
+    FlaskServer --> Database : Update image status to PROCESSED or delete image
 end box
 
 box "Database (PostgreSQL)"
     Database --> FlaskServer : Return user data
     Database --> FlaskServer : Save uploaded image data
-    Database --> FlaskServer : Update pothole detection status
+    Database --> FlaskServer : Update image status
 end box
 
 @enduml

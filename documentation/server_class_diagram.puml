@@ -35,6 +35,16 @@ class WebSocketHandler {
   + handle_user_confirmation(data): void
 }
 
+class WebSocketService {
+  + send_detection_confirmation(filename, detection_name): void
+}
+
+class WebSocketState {
+  + clients: Dict
+  + confirmation_lock: Lock
+  + pending_confirmations: Dict
+}
+
 class MonitoringService {
   + monitor_and_confirm_detections(): void
 }
@@ -71,10 +81,12 @@ FlaskApp -down-> LoginRoute
 FlaskApp -down-> LogoutRoute
 FlaskApp -down-> PotholeCoordinatesRoute
 FlaskApp -down-> PotholeRoute
+FlaskApp -down-> WebSocketService
 
 together {
     WebSocketHandler -right-> Auth : Uses
     DetectionService -down-> Database : Uses
+    DetectionService -down-> WebSocketService : Uses
     UploadFrameRoute -down-> Auth : Uses
     UploadFrameRoute -down-> ImageService : Uses
     UploadFrameRoute -down-> Database : Uses
@@ -83,5 +95,7 @@ together {
     PotholeCoordinatesRoute -down-> Database : Uses
     PotholeRoute -down-> Database : Uses
 }
+
+WebSocketService -down-> WebSocketState : Uses
 
 @enduml

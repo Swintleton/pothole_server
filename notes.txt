@@ -39,18 +39,24 @@ Image.Resampling.LANCZOS
 
 TO DO:
 install postgresql      --OK
-detect.py run for ever
+detect.py run for ever  --OK
     wait 1 secod if the folder is empty
     on successful detection update the database status to detected
 
-sever.py should only response if the detection is successful or verified
+sever.py should only response if the detection is successful or verified --OK
     always check the database for what to
         delete (older than 5 min),
         what to send to user (successful detection -> ask for verify)
         
-database
+database --OK
     username, image, upload_time, status
     
     status: uploaded -> detected -> verified
     
 set up github           --OK
+
+readme add
+logs
+code comments
+retrain the yolov5 with more datasets
+
