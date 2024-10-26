@@ -1,17 +1,17 @@
-import json
-from flask_sock import Sock
+from utils.logger import logger
 from services.websocket_state import clients, confirmation_lock, pending_confirmations
 from db.db_connection import Database
-from services.detection_service import DetectionService  # Import DetectionService
+from services.detection_service import DetectionService
+import json
+from services.websocket import sock
 
-sock = Sock()
-
+# WebSocket endpoint for handling confirmation
 @sock.route('/confirm')
 def confirm(ws):
     client_id = id(ws)
     clients[client_id] = ws
+    logger.info(f"Client {client_id} connected via WebSocket")
 
-    print("Client connected via WebSocket")
     try:
         while True:
             message = ws.receive()
@@ -22,12 +22,11 @@ def confirm(ws):
 
                 # Handle confirmation response from the client
                 handle_user_confirmation({'filename': filename, 'confirmed': confirmed})
-
-                print(f"Received message: {message}")
+                logger.info(f"Received message: {message}")
     except Exception as e:
-        print(f"WebSocket error: {e}")
+        logger.error(f"WebSocket error: {e}")
     finally:
-        print("Client disconnected")
+        logger.info(f"Client {client_id} disconnected")
         del clients[client_id]
 
 def handle_user_confirmation(data):
@@ -41,7 +40,7 @@ def handle_user_confirmation(data):
         if filename in pending_confirmations:
             pending_confirmations[filename] = confirmed
             if confirmed:
-                print(f"User confirmed detection for {filename}")
+                logger.info(f"User confirmed detection for {filename}")
                 conn = Database.get_connection()
                 if conn:
                     cursor = conn.cursor()
@@ -55,6 +54,6 @@ def handle_user_confirmation(data):
                         DetectionService.confirm_detection(image_id, filename)
 
                     cursor.close()
-                    conn.close()
+                    Database.return_connection(conn)
             else:
-                print(f"User did not confirm detection for {filename}")
+                logger.info(f"User did not confirm detection for {filename}")

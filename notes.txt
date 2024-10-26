@@ -3,7 +3,7 @@ conda clean --all
 
 conda activate yolov5
 E:
-cd saves/elte/final_project/yolov5
+cd saves/elte/final_project/server
 
 
 python -c "import torch; print(torch.__version__)"
@@ -43,7 +43,7 @@ detect.py run for ever  --OK
     wait 1 secod if the folder is empty
     on successful detection update the database status to detected
 
-sever.py should only response if the detection is successful or verified --OK
+sever.py should only response if the detection is successful or confirmed --OK
     always check the database for what to
         delete (older than 5 min),
         what to send to user (successful detection -> ask for verify)
@@ -51,12 +51,113 @@ sever.py should only response if the detection is successful or verified --OK
 database --OK
     username, image, upload_time, status
     
-    status: uploaded -> detected -> verified
+    status: uploaded -> detected -> confirmed
     
 set up github           --OK
 
-readme add
-logs
+logs --OK
+
+readme file
 code comments
 retrain the yolov5 with more datasets
+
+camera: confirm show detected image         --OK
+map:    on edit, show detected image        --OK    
+        on own edit, delete option add      
+doc:    redo, and make it strait line       
+
+unit tests  
+
+stream phone screen to pc -OK
+
+Bevezetés
+Fejlesztői dokumentáció
+Felhasználói dokumentáció
+
+
+Project to single file Server:
+$folders = @(".", "db", "routes", "services", "sockets", "utils")
+$excludeFiles = @("server_old.py")  # Add files you want to exclude here
+
+foreach ($folder in $folders) {
+    Get-ChildItem -Path $folder -Filter *.py | ForEach-Object {
+        $relativePath = (Resolve-Path $_.FullName -Relative) -replace "\\", "/"
+
+        # Check if the file name matches any in the exclude list
+        if ($excludeFiles -notcontains $_.Name) {
+            # Write the relative path to the output file
+            Add-Content -Path all_code_combined.txt -Value "`n${relativePath}:`n"
+            
+            # Append the content of the file
+            Get-Content $_.FullName | ForEach-Object { Add-Content -Path all_code_combined.txt -Value $_ }
+
+            # Add a newline between files (optional for readability)
+            Add-Content -Path all_code_combined.txt -Value "`n"
+        }
+    }
+}
+
+Project to single file Client:
+$folders = @("lib")
+$excludeFiles = @("server_old.py")  # Add files you want to exclude here
+
+foreach ($folder in $folders) {
+    Get-ChildItem -Path $folder -Filter *.dart | ForEach-Object {
+        $relativePath = (Resolve-Path $_.FullName -Relative) -replace "\\", "/"
+
+        # Check if the file name matches any in the exclude list
+        if ($excludeFiles -notcontains $_.Name) {
+            # Write the relative path to the output file
+            Add-Content -Path all_code_combined.txt -Value "`n${relativePath}:`n"
+            
+            # Append the content of the file
+            Get-Content $_.FullName | ForEach-Object { Add-Content -Path all_code_combined.txt -Value $_ }
+
+            # Add a newline between files (optional for readability)
+            Add-Content -Path all_code_combined.txt -Value "`n"
+        }
+    }
+}
+
+Linux:
+find . db routes services sockets utils -type f -name "*.js" -exec cat {} + > all_code_combined.txt
+
+
+
+
+
+test yolov9:
+python detect.py --weights yolov9-s.pt --img 640 --conf 0.25 --source E:/saves/elte/final_project/server/yolov9/dataset/pothole/images/train/potholes0.png
+
+test pothole trained:
+python detect.py --weights runs/train/yolov9-c-200-new/weights/best.pt --img 416 --source E:/saves/elte/final_project/server/yolov9/dataset/pothole/images/train/potholes0.png
+
+train yolov9:
+set KMP_DUPLICATE_LIB_OK=TRUE
+python train_dual.py --workers 2 --device 0 --batch 4 --data pothole_dataset.yaml --img 416 --cfg models/detect/yolov9-c.yaml --weights '' --name yolov9-c --hyp hyp.scratch-high.yaml --epochs 100 --close-mosaic 15
+python train_dual.py --workers 2 --device 0 --batch 4 --data pothole_dataset.yaml --img 416 --cfg models/detect/yolov9-c.yaml --weights runs/train/yolov9-c11 --name yolov9-c --hyp hyp.scratch-high.yaml --epochs 100 --close-mosaic 15 --resume
+
+Additional training:
+python train_dual.py --workers 2 --device 0 --batch 4 --data pothole_dataset.yaml --img 416 --cfg models/detect/yolov9-c.yaml --weights runs/train/yolov9-c11/weights/last.pt --name yolov9-c-new --hyp hyp.scratch-high.yaml --epochs 50 --close-mosaic 15
+python train_dual.py --workers 2 --device 0 --batch 4 --data pothole_dataset.yaml --img 416 --cfg models/detect/yolov9-c.yaml --weights runs/train/yolov9-c-new/weights/last.pt --name yolov9-c-200 --hyp hyp.scratch-high.yaml --epochs 50 --close-mosaic 15
+
+
+
+
+
+Train again:
+set KMP_DUPLICATE_LIB_OK=TRUE
+python train_dual.py --workers 2 --device 0 --batch 4 --data pothole_dataset.yaml --img 416 --cfg models/detect/yolov9-c.yaml --weights '' --name yolov9-c-150 --hyp hyp.scratch-high.yaml --epochs 150 --close-mosaic 15
+python train_dual.py --workers 2 --device 0 --batch 4 --data pothole_dataset.yaml --img 416 --cfg models/detect/yolov9-c.yaml --weights runs/train/yolov9-c-1502/weights/last.pt --name yolov9-c-200-new --hyp hyp.scratch-high.yaml --epochs 50 --close-mosaic 15
+
+
+
+
+
+
+
+Errors:
+line 903 in utils/general.py 
+prediction = prediction[0][0]  # select only inference output
+
 

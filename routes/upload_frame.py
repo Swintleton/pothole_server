@@ -3,6 +3,7 @@ from werkzeug.utils import secure_filename
 from services.image_service import ImageService
 from db.db_connection import Database
 from utils.auth import Auth
+from utils.logger import logger
 
 upload_frame_bp = Blueprint('upload_frame', __name__)
 
@@ -10,20 +11,36 @@ upload_frame_bp = Blueprint('upload_frame', __name__)
 def upload_frame():
     try:
         auth_token = request.headers.get('Authorization')
+
         if not auth_token:
+            logger.error("Authorization header is missing")
             return jsonify({'error': 'Unauthorized'}), 401
 
-        token = auth_token.split(" ")[1]
-        auth = Auth(token)
+        # Ensure the header contains a "Bearer" token
+        if not auth_token.startswith("Bearer "):
+            logger.error("Authorization header format is invalid")
+            return jsonify({'error': 'Unauthorized'}), 401
+
+        # Try to extract the token part
+        try:
+            token = auth_token.split(" ")[1]
+        except IndexError:
+            logger.error("Token not found in Authorization header")
+            return jsonify({'error': 'Unauthorized'}), 401
+
+        auth = Auth(token)  # Pass token to Auth class
 
         if not auth.verify_token():
+            logger.error("Token verification failed")
             return jsonify({'error': 'Unauthorized'}), 401
 
         if 'file' not in request.files:
+            logger.error("No file part in request")
             return jsonify({'error': 'No file part'}), 400
 
         file = request.files['file']
         if file.filename == '':
+            logger.error("No selected file in request")
             return jsonify({'error': 'No selected file'}), 400
 
         if file:
@@ -49,12 +66,13 @@ def upload_frame():
                     )
                     conn.commit()
                     cursor.close()
-                    conn.close()
+                    Database.return_connection(conn)
                 else:
+                    logger.error("Database connection failed")
                     return jsonify({'error': 'Database connection failed'}), 500
 
-        return ('', 204)
+        return jsonify({'message': 'Frame uploaded successfully'}), 200
 
     except Exception as e:
-        print(f"Error uploading frame: {e}")
+        logger.error(f"Error uploading frame: {e}")
         return jsonify({'error': 'Error uploading frame'}), 500

@@ -12,5 +12,5 @@ def logout():
         g.user_id = None  # Remove user context for this session if applicable
         return jsonify({"message": "Logout successful"}), 200
     except Exception as e:
-        print(f"Error during logout: {e}")
+        logger.error(f"Error during logout: {e}")
         return jsonify({'error': 'Error during logout'}), 500

@@ -161,8 +161,10 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-
+# Ignored folders:
 uploaded_frames/
 yolov5/
-potholes.png
+yolov9/
 
+# Exceptions:
+!yolov9/detect.py
