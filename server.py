@@ -7,6 +7,7 @@ from routes.logout import logout_bp
 from routes.pothole_coordinates import pothole_coordinates_bp
 from routes.pothole import pothole_bp
 from routes.get_detected_image import get_detected_image_bp
+from routes.registration import registration_bp
 from monitoring import monitor_and_confirm_detections
 import threading
 from flask_jwt_extended import JWTManager
@@ -26,6 +27,7 @@ app.register_blueprint(logout_bp)
 app.register_blueprint(pothole_coordinates_bp)
 app.register_blueprint(pothole_bp)
 app.register_blueprint(get_detected_image_bp)
+app.register_blueprint(registration_bp)
 
 # Initialize Sock for WebSocket support by linking it to the app
 sock.init_app(app)

@@ -103,3 +103,52 @@ def edit_pothole(id):
     except Exception as e:
         logger.info(f"Error updating pothole: {e}")
         return jsonify({"error": "Error updating pothole"}), 500
+
+@pothole_bp.route('/delete_pothole/<int:id>', methods=['DELETE'])
+def delete_pothole(id):
+    auth_token = request.headers.get('Authorization')
+
+    if not auth_token:
+        logger.error("Authorization header is missing")
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    auth = Auth(auth_token)
+
+    if not auth.verify_token():
+        logger.error("Token verification failed")
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    # Extract user ID and role ID
+    user_id = auth.get_user_id_from_token()
+    user_role = auth.get_user_role()  # Extend Auth to retrieve user role
+
+    conn = Database.get_connection()
+    if conn is None:
+        return jsonify({"error": "Database connection failed"}), 500
+
+    try:
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT uploaded_image_user_id FROM uploaded_image WHERE uploaded_image_id = %s
+        """, (id,))
+        pothole = cursor.fetchone()
+
+        if pothole:
+            pothole_creator_id = pothole[0]
+            # Check if user is either the creator or an admin
+            if user_id == pothole_creator_id or user_role == 'Admin':
+                cursor.execute("DELETE FROM uploaded_image WHERE uploaded_image_id = %s", (id,))
+                conn.commit()
+                logger.info(f"Pothole {id} deleted by user {user_id}")
+                return jsonify({"message": "Pothole deleted successfully"}), 200
+            else:
+                logger.warning(f"Unauthorized delete attempt by user {user_id}")
+                return jsonify({"error": "Unauthorized"}), 403
+        else:
+            return jsonify({"error": "Pothole not found"}), 404
+    except Exception as e:
+        logger.error(f"Error deleting pothole: {e}")
+        return jsonify({"error": "Error deleting pothole"}), 500
+    finally:
+        cursor.close()
+        Database.return_connection(conn)

@@ -14,7 +14,9 @@ def get_pothole_coordinates():
 
         cursor = conn.cursor()
         cursor.execute("""
-            SELECT uploaded_image_id, uploaded_image_gps_location_latitude, uploaded_image_gps_location_longitude, uploaded_image_file_name
+            SELECT uploaded_image_id, uploaded_image_gps_location_latitude, 
+                   uploaded_image_gps_location_longitude, uploaded_image_file_name, 
+                   uploaded_image_user_id
             FROM uploaded_image
             WHERE uploaded_image_status_id = 3
         """)
@@ -29,7 +31,8 @@ def get_pothole_coordinates():
                 "id": row[0],
                 "latitude": row[1],
                 "longitude": row[2],
-                "filename": os.path.splitext(row[3])[0] + "_detected.jpg"
+                "filename": os.path.splitext(row[3])[0] + "_detected.jpg",
+                "user_id": row[4]
             } for row in potholes
         ]
 

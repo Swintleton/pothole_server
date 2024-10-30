@@ -25,6 +25,8 @@ CREATE TABLE "user" (
 	user_created_datetime timestamp NOT NULL,
 	user_modified_datetime timestamp NULL,
 	user_auth_token TEXT NOT NULL,
+	user_email varchar(64) NOT NULL,
+	user_phone_number varchar(18) NULL,
 	CONSTRAINT user_pk PRIMARY KEY (user_id)
 );
 CREATE TABLE user_role (
@@ -95,7 +97,7 @@ EXECUTE FUNCTION update_user_modified_datetime();
 INSERT INTO user_role (user_role_id, user_role_name) VALUES(1, 'Admin');
 INSERT INTO user_role (user_role_id, user_role_name) VALUES(2, 'Reporter');
 
-INSERT INTO "user" (user_id, user_name, user_login, user_password, user_role_id, user_auth_token) VALUES(1, 'Test Admin', 'admin', '$2b$12$8888x04F81Br/t5xGbKnx.M1zfB58sM.DxEAGgd5Ic4xwp3BCzUj.', 1, 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyNzY1MDY4OSwianRpIjoiNGY1NzI1YmItMjUzOS00NzZhLWI2ZDItNTdkNjlmYmU1N2MzIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNzI3NjUwNjg5LCJjc3JmIjoiMTk5ZDU4OTItYmY4OC00MGVjLTgxZTMtY2IwMzQxMThjMTY1IiwiZXhwIjoxNzI3NjUxNTg5fQ.Nqj2OV4sxSA4A7BRzvSjOZNl0FbB9AIt8CBrfFM_-P8');
+INSERT INTO "user" (user_id, user_name, user_login, user_password, user_role_id, user_auth_token, user_email) VALUES(1, 'Test Admin', 'admin', '$2b$12$8888x04F81Br/t5xGbKnx.M1zfB58sM.DxEAGgd5Ic4xwp3BCzUj.', 1, 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyNzY1MDY4OSwianRpIjoiNGY1NzI1YmItMjUzOS00NzZhLWI2ZDItNTdkNjlmYmU1N2MzIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNzI3NjUwNjg5LCJjc3JmIjoiMTk5ZDU4OTItYmY4OC00MGVjLTgxZTMtY2IwMzQxMThjMTY1IiwiZXhwIjoxNzI3NjUxNTg5fQ.Nqj2OV4sxSA4A7BRzvSjOZNl0FbB9AIt8CBrfFM_-P8', 'testadmin@gmail.com');
 
 INSERT INTO uploaded_image_status (uploaded_image_status_id, uploaded_image_status_name) VALUES(1, 'UPLOADED');
 INSERT INTO uploaded_image_status (uploaded_image_status_id, uploaded_image_status_name) VALUES(2, 'DETECTED');

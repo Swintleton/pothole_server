@@ -35,3 +35,19 @@ class Auth:
         except Exception as e:
             print(f"Error extracting user_id from token: {e}")
             return None
+
+    def get_user_role(self):
+        conn = Database.get_connection()
+        if conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                SELECT user_role_name 
+                FROM user_role 
+                INNER JOIN "user" ON "user".user_role_id = user_role.user_role_id
+                WHERE user_id = %s
+            """, (g.user_id,))
+            result = cursor.fetchone()
+            cursor.close()
+            Database.return_connection(conn)
+            return result[0] if result else None
+        return None

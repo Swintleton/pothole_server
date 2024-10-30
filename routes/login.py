@@ -17,12 +17,17 @@ def login():
         return jsonify({"error": "Database connection failed"}), 500
     cursor = conn.cursor()
 
-    # Query the database for the user
-    cursor.execute("SELECT user_id, user_password FROM \"user\" WHERE user_login = %s", (username,))
+    # Query the database for the user along with their role
+    cursor.execute("""
+        SELECT u.user_id, u.user_password, r.user_role_name 
+        FROM "user" u
+        INNER JOIN user_role r ON u.user_role_id = r.user_role_id
+        WHERE u.user_login = %s
+    """, (username,))
     result = cursor.fetchone()
 
     if result:
-        user_id, stored_password = result
+        user_id, stored_password, user_role = result
 
         # Verify the provided password with the stored hashed password
         if bcrypt.checkpw(password.encode('utf-8'), stored_password.encode('utf-8')):
@@ -44,7 +49,13 @@ def login():
                 cursor.close()
                 Database.return_connection(conn)
 
-            return jsonify({"message": "Login successful", "auth_token": bearer_token}), 200
+            # Return both the auth token and the user's role
+            return jsonify({
+                "message": "Login successful",
+                "auth_token": bearer_token,
+                "user_id": user_id,
+                "user_role": user_role
+            }), 200
         else:
             cursor.close()
             Database.return_connection(conn)
