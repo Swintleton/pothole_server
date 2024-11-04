@@ -25,7 +25,7 @@ def add_pothole():
         logger.error("Token not found in Authorization header")
         return jsonify({'error': 'Unauthorized'}), 401
 
-    auth = Auth(token)  # Pass token to Auth class
+    auth = Auth(token)
 
     if not auth.verify_token():
         logger.error("Token verification failed")
@@ -41,8 +41,20 @@ def add_pothole():
     latitude = data.get('latitude')
     longitude = data.get('longitude')
 
-    if not latitude or not longitude:
+    # Check if latitude and longitude exist
+    if latitude is None or longitude is None:
         return jsonify({"error": "Invalid coordinates"}), 400
+    
+    # Check if latitude and longitude are numbers
+    try:
+        test_latitude = float(latitude)
+        test_longitude = float(longitude)
+    except (TypeError, ValueError):
+        return jsonify({"error": "Coordinates must be numbers"}), 400
+    
+    # Check if latitude is between -90 and 90, and longitude is between -180 and 180
+    if not (-90 <= float(latitude) <= 90 and -180 <= float(longitude) <= 180):
+        return jsonify({"error": "Coordinates are out of bounds"}), 400
 
     conn = Database.get_connection()
     if conn is None:
@@ -76,12 +88,40 @@ def add_pothole():
 
 @pothole_bp.route('/edit_pothole/<int:id>', methods=['PUT'])
 def edit_pothole(id):
+    auth_token = request.headers.get('Authorization')
+
+    if not auth_token:
+        logger.error("Authorization header is missing")
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    # Ensure the header contains a "Bearer" token
+    if not auth_token.startswith("Bearer "):
+        logger.error("Authorization header format is invalid")
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    # Try to extract the token part
+    try:
+        token = auth_token.split(" ")[1]
+    except IndexError:
+        logger.error("Token not found in Authorization header")
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    auth = Auth(token)
+
+    if not auth.verify_token():
+        logger.error("Token verification failed")
+        return jsonify({'error': 'Unauthorized'}), 401
+
     data = request.get_json()
     latitude = data.get('latitude')
     longitude = data.get('longitude')
 
     if not latitude or not longitude:
         return jsonify({"error": "Invalid coordinates"}), 400
+    
+    # Extract user ID and role ID
+    user_id = auth.get_user_id_from_token()
+    user_role = auth.get_user_role()
 
     conn = Database.get_connection()
     if conn is None:
@@ -90,19 +130,33 @@ def edit_pothole(id):
     try:
         cursor = conn.cursor()
         cursor.execute("""
-            UPDATE uploaded_image
-            SET uploaded_image_gps_location_latitude = %s, 
-                uploaded_image_gps_location_longitude = %s,
-                uploaded_image_modified_datetime = NOW()
-            WHERE uploaded_image_id = %s
-        """, (latitude, longitude, id))
-        conn.commit()
-        cursor.close()
-        Database.return_connection(conn)
-        return jsonify({"message": "Pothole updated successfully"}), 200
+            SELECT uploaded_image_user_id FROM uploaded_image WHERE uploaded_image_id = %s
+        """, (id,))
+        pothole = cursor.fetchone()
+
+        if pothole:
+            pothole_creator_id = pothole[0]
+            # Check if user is either the creator or an admin
+            if user_id == pothole_creator_id or user_role == 'Admin':
+                cursor.execute("""
+                    UPDATE uploaded_image
+                    SET uploaded_image_gps_location_latitude = %s, 
+                        uploaded_image_gps_location_longitude = %s,
+                        uploaded_image_modified_datetime = NOW()
+                    WHERE uploaded_image_id = %s
+                """, (latitude, longitude, id))
+                conn.commit()
+                logger.info(f"Pothole {id} updated by user {user_id}")
+                return jsonify({"message": "Pothole updated successfully"}), 200
+            else:
+                logger.warning(f"Unauthorized edit attempt by user {user_id}")
+                return jsonify({"error": "Unauthorized"}), 403
     except Exception as e:
         logger.info(f"Error updating pothole: {e}")
         return jsonify({"error": "Error updating pothole"}), 500
+    finally:
+        cursor.close()
+        Database.return_connection(conn)
 
 @pothole_bp.route('/delete_pothole/<int:id>', methods=['DELETE'])
 def delete_pothole(id):
@@ -112,7 +166,19 @@ def delete_pothole(id):
         logger.error("Authorization header is missing")
         return jsonify({'error': 'Unauthorized'}), 401
 
-    auth = Auth(auth_token)
+    # Ensure the header contains a "Bearer" token
+    if not auth_token.startswith("Bearer "):
+        logger.error("Authorization header format is invalid")
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    # Try to extract the token part
+    try:
+        token = auth_token.split(" ")[1]
+    except IndexError:
+        logger.error("Token not found in Authorization header")
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    auth = Auth(token)
 
     if not auth.verify_token():
         logger.error("Token verification failed")
@@ -120,7 +186,7 @@ def delete_pothole(id):
 
     # Extract user ID and role ID
     user_id = auth.get_user_id_from_token()
-    user_role = auth.get_user_role()  # Extend Auth to retrieve user role
+    user_role = auth.get_user_role()
 
     conn = Database.get_connection()
     if conn is None:

@@ -4,8 +4,8 @@ import time
 import json
 from db.db_connection import Database
 from services.image_service import ImageService
-from services.websocket_service import send_detection_confirmation  # Updated import
-from services.websocket_state import confirmation_lock, pending_confirmations  # Import WebSocket state
+from services.websocket_service import send_detection_confirmation
+from services.websocket_state import confirmation_lock, pending_confirmations
 import jwt
 from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
 

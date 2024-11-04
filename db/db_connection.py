@@ -1,6 +1,8 @@
 import psycopg2
 from psycopg2 import pool
 
+from unittest.mock import MagicMock
+
 class Database:
     connection_pool = None
 
@@ -29,7 +31,8 @@ class Database:
 
     @staticmethod
     def return_connection(conn):
-        Database.connection_pool.putconn(conn)
+        if conn and not isinstance(conn, MagicMock):
+            Database.connection_pool.putconn(conn)
 
     @staticmethod
     def close_all_connections():

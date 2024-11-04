@@ -2,14 +2,30 @@ from flask import Flask, request, Blueprint, jsonify
 import bcrypt
 from db.db_connection import Database
 from flask_jwt_extended import create_access_token, JWTManager
+import re
 
 login_bp = Blueprint('login', __name__)
+
+USERNAME_REGEX = r'^[a-zA-Z0-9\_\-]+$'
 
 @login_bp.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
     username = data.get('username')
     password = data.get('password')
+
+    if not username or not password:
+        return jsonify({'error': 'Username and password are required'}), 400
+
+    # Validate username format
+    if not re.match(USERNAME_REGEX, username):
+        return jsonify({'error': 'Invalid username format'}), 400
+
+    # Check the length of username and password
+    if len(username) > 128:
+        return jsonify({'error': 'Username too long'}), 400
+    if len(password) > 256:
+        return jsonify({'error': 'Password too long'}), 400
 
     # Connect to the database
     conn = Database.get_connection()

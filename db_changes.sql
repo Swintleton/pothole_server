@@ -27,6 +27,7 @@ CREATE TABLE "user" (
 	user_auth_token TEXT NOT NULL,
 	user_email varchar(64) NOT NULL,
 	user_phone_number varchar(18) NULL,
+	ADD CONSTRAINT unique_user_email UNIQUE (user_email);
 	CONSTRAINT user_pk PRIMARY KEY (user_id)
 );
 CREATE TABLE user_role (

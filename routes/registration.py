@@ -6,8 +6,10 @@ import re
 registration_bp = Blueprint('registration', __name__)
 
 # Regular expressions for format checks
+LOGIN_REGEX = r'^[a-zA-Z0-9\_\-]+$'
+NAME_REGEX = r'^[a-zA-Z0-9_\-\s]+$'
 EMAIL_REGEX = r'^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$'
-PHONE_REGEX = r'^\+?[0-9\s\-\(\)]{10,15}$'
+PHONE_REGEX = r'^\+?(\d{1,3})?[-.\s]?(\(?\d{1,4}\)?)[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$'
 PASSWORD_REGEX = r'^(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$'
 
 @registration_bp.route('/register', methods=['POST'])
@@ -22,6 +24,14 @@ def register():
     # Check if required fields are provided
     if not username or not login or not password or not email:
         return jsonify({'error': 'Username, login, password, and email are required'}), 400
+
+    # Validate username format
+    if not re.match(LOGIN_REGEX, login):
+        return jsonify({'error': 'Username can only contain letters, numbers, underscores, and hyphens'}), 400
+
+    # Validate name format
+    if not re.match(NAME_REGEX, username):
+        return jsonify({'error': 'Name can only contain letters, numbers, underscores, spaces and hyphens'}), 400
 
     # Validate email format
     if not re.match(EMAIL_REGEX, email):
@@ -49,6 +59,13 @@ def register():
         cursor.close()
         Database.return_connection(conn)
         return jsonify({'error': 'Login already exists'}), 400
+
+    # Check if the email already exists
+    cursor.execute("SELECT user_id FROM \"user\" WHERE user_email = %s", (email,))
+    if cursor.fetchone():
+        cursor.close()
+        Database.return_connection(conn)
+        return jsonify({'error': 'Email already exists'}), 400
 
     # Hash the password
     hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')

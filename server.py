@@ -11,6 +11,7 @@ from routes.registration import registration_bp
 from monitoring import monitor_and_confirm_detections
 import threading
 from flask_jwt_extended import JWTManager
+#from hypercorn.middleware import AsyncioWSGIMiddleware
 
 # Import sock from websocket.py
 from services.websocket import sock
@@ -35,18 +36,38 @@ sock.init_app(app)
 # Import WebSocket handlers
 import sockets.confirmation_socket
 
-#from gevent import pywsgi
+#from gevent import pywsgi, spawn
 #from geventwebsocket.handler import WebSocketHandler
 
+# Deployment:
+"""
+# Wrap Flask app in AsyncioWSGIMiddleware for ASGI compatibility
+asgi_app = AsyncioWSGIMiddleware(app)  # Define at module level for Uvicorn
+
+# Start monitoring thread
+def start_monitoring_thread():
+    logger.info("Starting monitoring thread...")
+    monitoring_thread = threading.Thread(
+        target=monitor_and_confirm_detections,
+        args=(app.config['JWT_SECRET_KEY'], app.config['JWT_ALGORITHM']),
+        daemon=True
+    )
+    monitoring_thread.start()
+"""
+
 if __name__ == '__main__':
+    # Debug mode
     monitoring_thread = threading.Thread(
         target=monitor_and_confirm_detections, 
         args=(app.config['JWT_SECRET_KEY'], app.config['JWT_ALGORITHM']), 
         daemon=True
     )
     monitoring_thread.start()
-
-    # Start the server with WebSocket support using gevent
     app.run(host='192.168.0.115', port=5000)
-    #server = pywsgi.WSGIServer(('192.168.0.115', 5000), app, handler_class=WebSocketHandler)
-    #server.serve_forever()
+
+    # Deployment
+    """
+    start_monitoring_thread()  # Start monitoring thread
+    import uvicorn
+    uvicorn.run("server:asgi_app", host="192.168.0.115", port=5000, workers=2)
+    """

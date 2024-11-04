@@ -28,7 +28,7 @@ def upload_frame():
             logger.error("Token not found in Authorization header")
             return jsonify({'error': 'Unauthorized'}), 401
 
-        auth = Auth(token)  # Pass token to Auth class
+        auth = Auth(token)
 
         if not auth.verify_token():
             logger.error("Token verification failed")
@@ -45,31 +45,49 @@ def upload_frame():
 
         if file:
             filename = secure_filename(file.filename)
-            file_path = ImageService.process_image(file, filename)
+            try:
+                file_path = ImageService.process_image(file, filename)
+            except IOError:
+                logger.error("Invalid image file type")
+                return jsonify({'error': 'Invalid image file type'}), 400
 
             latitude = request.form.get('latitude')
             longitude = request.form.get('longitude')
 
-            if latitude and longitude:
-                conn = Database.get_connection()
-                if conn:
-                    cursor = conn.cursor()
-                    cursor.execute(
-                        """
-                        INSERT INTO uploaded_image 
-                        (uploaded_image_user_id, uploaded_image_file_name, uploaded_image_created_datetime, 
-                         uploaded_image_modified_datetime, uploaded_image_status_id, 
-                         uploaded_image_gps_location_latitude, uploaded_image_gps_location_longitude) 
-                        VALUES (%s, %s, NOW(), NOW(), 1, %s, %s)
-                        """,
-                        (g.user_id, filename, latitude, longitude)
-                    )
-                    conn.commit()
-                    cursor.close()
-                    Database.return_connection(conn)
-                else:
-                    logger.error("Database connection failed")
-                    return jsonify({'error': 'Database connection failed'}), 500
+            # Check if latitude and longitude exist
+            if latitude is None or longitude is None:
+                return jsonify({"error": "Invalid coordinates"}), 400
+            
+            # Check if latitude and longitude are numbers
+            try:
+                test_latitude = float(latitude)
+                test_longitude = float(longitude)
+            except (TypeError, ValueError):
+                return jsonify({"error": "Coordinates must be numbers"}), 400
+            
+            # Check if latitude is between -90 and 90, and longitude is between -180 and 180
+            if not (-90 <= float(latitude) <= 90 and -180 <= float(longitude) <= 180):
+                return jsonify({"error": "Coordinates are out of bounds"}), 400
+
+            conn = Database.get_connection()
+            if conn:
+                cursor = conn.cursor()
+                cursor.execute(
+                    """
+                    INSERT INTO uploaded_image 
+                    (uploaded_image_user_id, uploaded_image_file_name, uploaded_image_created_datetime, 
+                        uploaded_image_modified_datetime, uploaded_image_status_id, 
+                        uploaded_image_gps_location_latitude, uploaded_image_gps_location_longitude) 
+                    VALUES (%s, %s, NOW(), NOW(), 1, %s, %s)
+                    """,
+                    (g.user_id, filename, latitude, longitude)
+                )
+                conn.commit()
+                cursor.close()
+                Database.return_connection(conn)
+            else:
+                logger.error("Database connection failed")
+                return jsonify({'error': 'Database connection failed'}), 500
 
         return jsonify({'message': 'Frame uploaded successfully'}), 200
 

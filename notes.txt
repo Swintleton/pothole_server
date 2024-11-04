@@ -76,7 +76,7 @@ Felhasználói dokumentáció
 
 
 Project to single file Server:
-$folders = @(".", "db", "routes", "services", "sockets", "utils")
+$folders = @(".", "db", "routes", "services", "sockets", "utils", "tests")
 $excludeFiles = @("server_old.py")  # Add files you want to exclude here
 
 foreach ($folder in $folders) {
@@ -161,3 +161,11 @@ line 903 in utils/general.py
 prediction = prediction[0][0]  # select only inference output
 
 
+
+
+Unit tests:
+pip install Flask-Testing pytest
+
+pytest tests/
+or
+python -m unittest discover tests
