@@ -169,3 +169,5 @@ pip install Flask-Testing pytest
 pytest tests/
 or
 python -m unittest discover tests
+
+pytest --cache-clear

@@ -1,57 +1,101 @@
 import unittest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch, MagicMock, call
+from datetime import datetime, timedelta
 from server import app
 from tests.base_test import BaseTestCase
+import os
 import json
-import threading
-import time
-from websocket import create_connection
-from utils.logger import logger
+import re
 
-class PotholeConfirmationTestCase(BaseTestCase):
+class ConfirmPotholeDetectionTestCase(BaseTestCase):
     @patch('db.db_connection.Database.get_connection')
-    def test_websocket_pothole_confirmation(self, mock_get_connection):
+    @patch('os.rename')  # Mock file move to avoid existing file errors
+    @patch('os.path.exists', return_value=True)
+    def test_confirm_detection(self, mock_exists, mock_rename, mock_get_connection):
         # Mock database connection and cursor
         mock_conn = MagicMock()
         mock_cursor = MagicMock()
         mock_get_connection.return_value = mock_conn
         mock_conn.cursor.return_value = mock_cursor
 
-        # Mock response for confirmation retrieval
-        mock_cursor.fetchone.return_value = [1]  # Assume an image ID is retrieved
+        # Mock database responses
+        mock_cursor.fetchone.side_effect = [
+            [1, 'frame_1.jpg'],  # Detection pending confirmation
+            (1,),  # Image found for confirmation step
+            None  # No further results after confirmation
+        ]
 
-        # Start the Flask server in a separate thread
-        def run_server():
-            app.run(host="127.0.0.1", port=5001, use_reloader=False)
+        token = self.get_valid_token()
+        user_id = 1  # Example user_id extracted from token
+        threshold_time = datetime.now() - timedelta(seconds=30)
 
-        server_thread = threading.Thread(target=run_server)
-        server_thread.daemon = True
-        server_thread.start()
+        with app.test_client() as client:
+            # Step 1: Fetch pending detection
+            response = client.get(
+                '/get_detection_confirmation',
+                headers={'Authorization': f'Bearer {token}'}
+            )
+            self.assertEqual(response.status_code, 200)
+            detection_data = response.get_json()
+            self.assertEqual(detection_data['filename'], 'frame_1_detected.jpg')
 
-        # Wait for the server to start
-        time.sleep(1)
+            # Step 2: Confirm the detection
+            confirm_response = client.post(
+                '/confirm',
+                headers={'Authorization': f'Bearer {token}', 'Content-Type': 'application/json'},
+                data=json.dumps({
+                    'filename': 'frame_1.jpg',
+                    'confirmed': True
+                })
+            )
+            self.assertEqual(confirm_response.status_code, 200)
 
-        try:
-            # Connect to the WebSocket and send a confirmation message
-            ws = create_connection("ws://127.0.0.1:5001/confirm", timeout=1)
-            ws.send(json.dumps({
-                'filename': 'frame_1.jpg',
-                'confirmed': True
-            }))
-
-            # Wait briefly and attempt to receive a server response or close
-            time.sleep(1)
-            ws.close()
-
-            # Validate database interaction for confirmation
-            mock_cursor.execute.assert_called_once_with(
-                "SELECT uploaded_image_id FROM uploaded_image WHERE uploaded_image_file_name = %s",
-                ('frame_1.jpg',)
+            # Verify file rename (move) was called to avoid "file exists" error
+            mock_rename.assert_called_once_with(
+                os.path.join('uploaded_frames', 'frame_1.jpg'),
+                os.path.join('uploaded_frames/confirmed', 'frame_1.jpg')
             )
 
-        except Exception as e:
-            logger.error(f"Test failed with exception: {e}")
+            # Function to normalize SQL queries by removing whitespace
+            def normalize_sql(query):
+                return re.sub(r'\s+', ' ', query).strip()
 
-        finally:
-            # Stop the server thread
-            server_thread.join(timeout=1)
+            # Capture specific SQL queries for readability
+            select_pending_detections = normalize_sql(mock_cursor.execute.call_args_list[0][0][0])
+            select_for_confirmation = normalize_sql(mock_cursor.execute.call_args_list[1][0][0])
+            update_confirmation_query = normalize_sql(mock_cursor.execute.call_args_list[3][0][0])
+
+            # Verify the specific parts of SQL queries were executed
+            self.assertIn("SELECT uploaded_image_id, uploaded_image_file_name", select_pending_detections)
+            self.assertIn("WHERE uploaded_image_status_id = 2 AND uploaded_image_modified_datetime < %s", select_pending_detections)
+
+            self.assertIn("SELECT uploaded_image_id, uploaded_image_file_name", select_for_confirmation)
+            self.assertIn("WHERE uploaded_image_status_id = 2 AND uploaded_image_user_id = %s", select_for_confirmation)
+
+            self.assertIn("UPDATE uploaded_image SET uploaded_image_status_id = 3", update_confirmation_query)
+
+    @patch('db.db_connection.Database.get_connection')
+    def test_confirm_detection_missing_auth_header(self, mock_get_connection):
+        # Test for missing Authorization header
+        with app.test_client() as client:
+            response = client.post(
+                '/confirm',
+                headers={'Content-Type': 'application/json'},
+                data=json.dumps({'filename': 'frame_1.jpg', 'confirmed': True})
+            )
+            self.assertEqual(response.status_code, 401)
+            error_message = response.get_json().get("error")
+            self.assertIn("Unauthorized", error_message)
+
+    @patch('db.db_connection.Database.get_connection')
+    def test_confirm_detection_invalid_auth_token(self, mock_get_connection):
+        # Test for invalid Authorization token
+        with app.test_client() as client:
+            response = client.post(
+                '/confirm',
+                headers={'Authorization': 'Bearer invalid_token', 'Content-Type': 'application/json'},
+                data=json.dumps({'filename': 'frame_1.jpg', 'confirmed': True})
+            )
+            self.assertEqual(response.status_code, 401)
+            error_message = response.get_json().get("error")
+            self.assertIn("Unauthorized", error_message)
