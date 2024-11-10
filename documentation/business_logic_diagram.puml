@@ -5,34 +5,39 @@ U --> FlutterApp : Upload Image
 U --> FlutterApp : Log in
 U --> FlutterApp : View Potholes
 U --> FlutterApp : Confirm Detection
+U --> FlutterApp : Register
+U --> FlutterApp : Logout
 
 box "Client Side (Flutter)"
     FlutterApp --> FlaskServer : POST /login
+    FlutterApp --> FlaskServer : POST /register
+    FlutterApp --> FlaskServer : POST /logout
     FlutterApp --> FlaskServer : POST /upload_frame
     FlutterApp --> FlaskServer : GET /potholes
-    FlutterApp -> WebSocketService : WebSocket connect for confirmation
+    FlutterApp --> FlaskServer : POST /confirm_detection
+    FlutterApp --> FlaskServer : GET /get_detection_confirmation
+    FlutterApp --> FlaskServer : GET /get_detected_image
 end box
 
 box "Server Side (Flask)"
     FlaskServer --> Database : Authenticate user
+    FlaskServer --> Database : Register new user
+    FlaskServer --> Database : Log user out
     FlaskServer --> Database : Insert uploaded image
-    FlaskServer --> Database : Fetch potholes
+    FlaskServer --> Database : Fetch pothole coordinates
     FlaskServer --> DetectionService : Process detection in image
-    DetectionService --> FlaskServer : Pothole detected
-    FlaskServer --> WebSocketService : Send confirmation request
+    DetectionService --> FlaskServer : Notify detection result
+    FlaskServer --> Database : Save or update detection result
+    FlaskServer --> DetectionService : Confirm detection on request
 
-    WebSocketService --> User : Confirm detection via WebSocket
-    User --> WebSocketService : Confirmation Response (Yes/No)
-    WebSocketService --> DetectionService : Forward confirmation
-    DetectionService --> FlaskServer : Update image status
-
-    FlaskServer --> Database : Update image status to PROCESSED or delete image
+    FlaskServer --> Database : Update image status (e.g., PROCESSED, CONFIRMED) or delete image
 end box
 
 box "Database (PostgreSQL)"
-    Database --> FlaskServer : Return user data
-    Database --> FlaskServer : Save uploaded image data
-    Database --> FlaskServer : Update image status
+    Database --> FlaskServer : Return user data (login, registration)
+    Database --> FlaskServer : Save uploaded image and location data
+    Database --> FlaskServer : Fetch pothole coordinates
+    Database --> FlaskServer : Update detection status
 end box
 
 @enduml

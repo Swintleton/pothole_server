@@ -7,6 +7,13 @@ RECTANGLE "Login Screen" as Login {
   - Login button
 }
 
+RECTANGLE "Registration Screen" as Registration {
+  - Username, Name, Password fields
+  - Confirm Password field
+  - Email and Phone fields
+  - Register button
+}
+
 RECTANGLE "Home Screen" as Home {
   - "Welcome" text
   - "Pothole Detector" title
@@ -17,35 +24,52 @@ RECTANGLE "Map Screen" as Map {
   - Google Map
   - Pothole markers
   - Long-press to add a new pothole
-}
-
-RECTANGLE "Camera Screen" as Camera {
-  - Camera preview
-  - Capture button
-  - Upload functionality
+  - Role-based editing/deletion
 }
 
 RECTANGLE "Map Confirmation Dialog" as MapConfirm {
   - Pothole detection confirmation
   - "Yes" / "No" buttons
+  - Cancel button
+}
+
+RECTANGLE "Camera Screen" as Camera {
+  - Camera preview
+  - Capture and upload frames
+  - Frame processing with AI
 }
 
 RECTANGLE "Camera Detection Confirmation Dialog" as CameraConfirm {
-  - Pothole detected by AI
-  - Confirm or reject detection
+  - Display detected pothole by AI
+  - "Confirm" or "Cancel" detection
 }
 
 RECTANGLE "Pothole Edit Dialog" as Edit {
-  - Pothole details (e.g., Lat/Long)
-  - Save or Cancel button
+  - Pothole details
+  - Save, Cancel, or Delete
+}
+
+RECTANGLE "Logout Logic" as Logout {
+  - Automatic logout on invalid token detection
+  - Manual logout option
 }
 
 Login --> Home : Login success
+Login --> Registration : "Register button" 
+Registration --> Login : Back to Login or Registration success
 Home --> Map : Navigate to map
+Map --> Home : Navigate to home
 Home --> Camera : Navigate to camera
-Map --> MapConfirm : On marker tap
-Map --> Edit : On marker long-press
-MapConfirm --> Map : Save or discard location and return to map
-Camera --> CameraConfirm : AI detects pothole, user confirms detection
-CameraConfirm --> Camera : Confirm detection and return to camera screen
+Camera --> Home : Navigate to home
+Home --> Logout : "Logout button"
+Map --> MapConfirm : "On marker tap"
+Map --> Edit : "On marker long-press"
+MapConfirm --> Map : "Confirm or Cancel"
+Camera --> CameraConfirm : "AI detects pothole, prompts user"
+CameraConfirm --> Camera : "Confirm or Cancel detection"
+Edit --> Map : "Save, delete, or cancel and return to map"
+CameraConfirm --> Logout : "Invalid token detected"
+MapConfirm --> Logout : "Invalid token detected"
+Map --> Camera : Navigate to camera
+Camera --> Map : Navigate to map
 @enduml

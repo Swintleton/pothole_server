@@ -171,3 +171,18 @@ or
 python -m unittest discover tests
 
 pytest --cache-clear
+
+
+
+
+
+Release client:
+keytool -genkey -v -keystore "E:\saves\elte\final_project\client\pothole-release-key.jks" -storetype JKS -keyalg RSA -keysize 2048 -validity 10000 -alias pothole-key-alias
+
+password: 123456
+Migrate to:
+keytool -importkeystore -srckeystore E:\saves\elte\final_project\client\pothole-release-key.jks -destkeystore E:\saves\elte\final_project\client\pothole-release-key.jks -deststoretype pkcs12
+
+flutter clean
+flutter build apk --release
+Built build\app\outputs\flutter-apk\app-release.apk (21.9MB)

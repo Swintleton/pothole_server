@@ -1,9 +1,19 @@
 @startuml
 
+class MyApp {
+  + initState(): void
+  + build(context: BuildContext): Widget
+  + _checkLoginStatus(): Future<void>
+}
+
+class MainPage {
+  + build(context: BuildContext): Widget
+  + _onItemTapped(index: int): void
+}
+
 class MyHomePage {
   + title: String
   + build(context: BuildContext): Widget
-  + _logout(): Future<void>
   + _loadUserInfo(): Future<void>
 }
 
@@ -12,21 +22,35 @@ class LoginPage {
   + _login(): Future<void>
 }
 
+class RegistrationPage {
+  + build(context: BuildContext): Widget
+  + _register(): Future<void>
+}
+
+class AuthHelper {
+  + logout(context: BuildContext, mounted: bool): Future<void>
+  + getUserRole(): Future<String?>
+  + getUserId(): Future<int?>
+  + getAuthToken(): Future<String?>
+}
+
 class MapPage {
   + build(context: BuildContext): Widget
 }
 
 class GoogleMapWidget {
   + initState(): void
+  + _initializeUserInfo(): Future<void>
   + _requestPermission(): Future<void>
   + _fetchPotholeCoordinates(): Future<void>
   + _onMapCreated(GoogleMapController controller): void
   + _onMapLongPressed(LatLng latLng): void
   + _addPothole(LatLng latLng): Future<void>
-  + _editPothole(int id, double latitude, double longitude): void
+  + _editPothole(int id, double latitude, double longitude, String filename, int creatorId): void
   + _showAddPotholeDialog(LatLng latLng): Future<void>
-  + _showEditPotholeDialog(int id, LatLng latLng): Future<void>
-  + _savePotholeEdit(int id, LatLng latLng): Future<void>
+  + _showEditPotholeDialog(int id, LatLng latLng, String filename, int creatorId): Future<void>
+  + _savePothole(int id, LatLng latLng): Future<void>
+  + _deletePothole(int id): Future<void>
   + build(context: BuildContext): Widget
 }
 
@@ -40,20 +64,32 @@ class _CameraPageState {
   + isCameraInitialized: bool
   + isUploading: bool
   + timer: Timer?
-  + channel: WebSocketChannel
+  + confirmationPoller: Timer?
 
   + initState(): void
   + dispose(): void
   + initializeCamera(): Future<void>
   + captureFrame(CameraImage image): Future<void>
-  + connectWebSocket(): void
-  + showConfirmationDialog(String filename): Future<void>
+  + captureFrameFromStream(): void
+  + startConfirmationPolling(): void
+  + pollForDetectionConfirmation(): Future<void>
+  + showConfirmationDialog(String filename, String imageUrl): Future<void>
+  + sendConfirmationResponse(String filename, bool confirmed): Future<void>
 }
 
-MyHomePage -- LoginPage : "redirects to"
-MyHomePage -- GoogleMapWidget : "displays map"
-MyHomePage -- CameraPage : "displays camera"
+MyApp -- MainPage : "displays main content"
+MainPage --> MyHomePage : "displays home screen"
+MainPage --> MapPage : "displays map screen"
+MainPage --> CameraPage : "displays camera screen"
+MainPage --> AuthHelper : "handles logout"
+
+MyHomePage --> AuthHelper : "uses to load user info"
+LoginPage --> AuthHelper : "uses for login"
+RegistrationPage --> AuthHelper : "uses for registration"
+
+GoogleMapWidget --> AuthHelper : "verifies user info"
 
 CameraPage --> _CameraPageState : "has state"
+_CameraPageState --> AuthHelper : "verifies auth token"
 
 @enduml

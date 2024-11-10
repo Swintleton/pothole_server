@@ -165,7 +165,6 @@ all_code_combined.txt
 
 # Ignored folders:
 uploaded_frames/
-yolov5/
 yolov9/
 
 # Exceptions:
