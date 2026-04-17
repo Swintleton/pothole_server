@@ -49,17 +49,22 @@ This project includes a Flask-based server application that supports the operati
 
 ## Installation
 
-1. **Install dependencies**  
-   Download `DUKA_ZOLTÁN_I5B3YM_SZAKDOLGOZAT.zip`, extract it, then install the required packages from `requirements.txt`:
+1. **Clone the repository**
 
    ```bash
+   git clone <repository-url>
    cd server
+   ```
+
+2. **Create a virtual environment and install dependencies**
+
+   ```bash
    python3 -m venv venv
    source venv/bin/activate  # on Windows: venv\Scripts\activate
    pip install -r requirements.txt
    ```
 
-2. **Set up the database**  
+3. **Set up the database**
    Create a PostgreSQL database and load the database schema:
 
    ```sql
@@ -68,7 +73,7 @@ This project includes a Flask-based server application that supports the operati
    -- Load the database schema if a corresponding .sql file is provided
    ```
 
-3. **Configure environment variables**  
+4. **Configure environment variables**
    Modify `config.py`, or create a `.env` file in the project root and define the following environment variables:
 
    ```plaintext
@@ -77,7 +82,7 @@ This project includes a Flask-based server application that supports the operati
    SECRET_KEY=<secret_key>
    ```
 
-4. **Run the server**  
+5. **Run the server**
    Use the following command to start the server:
 
    ```bash
@@ -186,17 +191,22 @@ Ez a projekt egy Flask-alapú szerveralkalmazást is tartalmaz, amely képfeldol
 
 ## Telepítés
 
-1. **Csomagok telepítése**  
-   Töltsd le a `DUKA_ZOLTÁN_I5B3YM_SZAKDOLGOZAT.zip` fájlt, csomagold ki, majd telepítsd a szükséges csomagokat a `requirements.txt` fájlból:
+1. **A repository klónozása**
 
    ```bash
+   git clone <repository-url>
    cd server
+   ```
+
+2. **Virtuális környezet létrehozása és a függőségek telepítése**
+
+   ```bash
    python3 -m venv venv
    source venv/bin/activate  # vagy Windows esetén: venv\Scripts\activate
    pip install -r requirements.txt
    ```
 
-2. **Adatbázis beállítása**  
+3. **Adatbázis beállítása**  
    Hozz létre egy PostgreSQL adatbázist, és töltsd be az adatbázis sémát:
 
    ```sql
@@ -205,7 +215,7 @@ Ez a projekt egy Flask-alapú szerveralkalmazást is tartalmaz, amely képfeldol
    -- Töltsd be az adatbázis sémáját, ha van hozzá tartozó .sql fájl
    ```
 
-3. **Környezetváltozók beállítása**  
+4. **Környezetváltozók beállítása**  
    Módosítsd a `config.py` fájlt, vagy hozz létre egy `.env` fájlt a projekt gyökerében, és add meg a következő környezetváltozókat:
 
    ```plaintext
@@ -214,7 +224,7 @@ Ez a projekt egy Flask-alapú szerveralkalmazást is tartalmaz, amely képfeldol
    SECRET_KEY=<titkos_kulcs>
    ```
 
-4. **Indítás**  
+5. **Indítás**  
    A szerver futtatásához használd a következő parancsot:
 
    ```bash
