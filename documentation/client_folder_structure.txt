@@ -1,0 +1,14 @@
+├── client/                          # Kliens alkalmazás fő mappája
+│    ├── android/                    # Android-specifikus fájlok és konfigurációk
+│    │    └── app/src/main/res/      # Ikonok, képek és egyéb erőforrások
+│    ├── ios/                        # iOS-specifikus fájlok és konfigurációk
+│    ├── lib/                        # Alkalmazás fő Dart kódja
+│    │   ├── auth_helper.dart        # Autentikáció kezelése
+│    │   ├── camera_page.dart        # Kamera oldala
+│    │   ├── config.dart             # Konfigurációs beállítások
+│    │   ├── login_page.dart         # Bejelentkezési oldal
+│    │   ├── main.dart               # Alkalmazás belépési pontja
+│    │   ├── map_page.dart           # Térkép oldala
+│    │   ├── my_home_page.dart       # Home oldala
+│    │   └── registration_page.dart  # Regisztrációs oldal
+│    └── pubspec.yaml                # Flutter projektbeállítások és függőségek

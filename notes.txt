@@ -36,47 +36,13 @@ C:\Users\Kerachi\anaconda3\envs\yolov5\Lib\site-packages\torch\utils\tensorboard
 Image.Resampling.LANCZOS
 
 
-
-TO DO:
-install postgresql      --OK
-detect.py run for ever  --OK
-    wait 1 secod if the folder is empty
-    on successful detection update the database status to detected
-
-sever.py should only response if the detection is successful or confirmed --OK
-    always check the database for what to
-        delete (older than 5 min),
-        what to send to user (successful detection -> ask for verify)
-        
-database --OK
-    username, image, upload_time, status
-    
-    status: uploaded -> detected -> confirmed
-    
-set up github           --OK
-
-logs --OK
-
 readme file
 code comments
-retrain the yolov5 with more datasets
 
-camera: confirm show detected image         --OK
-map:    on edit, show detected image        --OK    
-        on own edit, delete option add      
-doc:    redo, and make it strait line       
-
-unit tests  
-
-stream phone screen to pc -OK
-
-Bevezetés
-Fejlesztői dokumentáció
-Felhasználói dokumentáció
 
 
 Project to single file Server:
-$folders = @(".", "db", "routes", "services", "sockets", "utils", "tests")
+$folders = @(".", "db", "routes", "services", "utils", "tests")
 $excludeFiles = @("server_old.py")  # Add files you want to exclude here
 
 foreach ($folder in $folders) {
@@ -186,3 +152,7 @@ keytool -importkeystore -srckeystore E:\saves\elte\final_project\client\pothole-
 flutter clean
 flutter build apk --release
 Built build\app\outputs\flutter-apk\app-release.apk (21.9MB)
+
+ngrok http 5000
+
+ngrok http 5000 --url=famous-goldfish-set.ngrok-free.app

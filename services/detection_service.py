@@ -79,6 +79,11 @@ class DetectionService:
                 if os.path.exists(file_path):
                     os.remove(file_path)
                 
+                # Delete the image file from confirmed path too
+                file_path = os.path.join(ImageService.CONFIRMED_FOLDER, filename)
+                if os.path.exists(file_path):
+                    os.remove(file_path)
+                
                 # Delete the detected image file
                 # Get base filename and extension
                 base_filename, file_extension = os.path.splitext(filename)
@@ -86,7 +91,7 @@ class DetectionService:
                 detected_filename = base_filename + "_detected" + file_extension
 
                 # Create the full path with the modified filename
-                file_path = os.path.join(ImageService.UPLOAD_FOLDER, detected_filename)
+                file_path = os.path.join(ImageService.CONFIRMED_FOLDER, detected_filename)
 
                 # Check if the file exists and remove it
                 if os.path.exists(file_path):

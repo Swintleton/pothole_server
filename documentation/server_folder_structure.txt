@@ -1,0 +1,50 @@
+├── server/                                         # Szerver alkalmazás fő mappája
+│   ├── db/                                         # Adatbázissal kapcsolatos osztályok/függvények
+│   │   └── db_connection.py                        # Adatbázis kapcsolathoz szükséges függvények
+│   ├── routes/                                     # Egyes végpontokhoz kapcsolódó logika
+│   │   ├── routes/confirm.py                       # Kátyú detektálásának megerősítési végpointja
+│   │   ├── routes/get_detected_image.py            # Detektált kátyú kép lekérési végpont
+│   │   ├── routes/get_detection_confirmation.py    # Detektált kátyú azonosítók megerősítésre lekérésének végpontja
+│   │   ├── routes/login.py                         # Bejelentkezési végpont
+│   │   ├── routes/logout.py                        # Kijelentkezési végpont
+│   │   ├── routes/pothole_coordinates.py           # Kátyúk koordinátáinak lekérési végpontja
+│   │   ├── routes/pothole.py                       # Kátyú létrehozása, módosítása, törlése végpont
+│   │   ├── routes/registration.py                  # Regisztrációs végpont
+│   │   └── routes/upload_frame.py                  # Úti képfeltöltés (kátyú detektálásra) végpont
+│   ├── services/                                   # Szolgáltatások és segédfüggvények
+│   │   ├── detection_service.py                    # Kátyú felismerési eljárások
+│   │   └── image_processing.py                     # Kép feldolgozási eljárások
+│   ├── tests/                                      # Unit tesztek
+│   │   ├── base_test.py                            # A tesztekhez tartozó segédfüggvények
+│   │   ├── test_get_detected_image.py              # Detektált kátyú kép lekérési végpont tesztek
+│   │   ├── test_get_detection_confirmation.py      # Detektált kátyú azonosítók megerősítésre lekérésének végpont tesztek
+│   │   ├── test_get_pothole_coordinates.py         # Kátyúk koordinátáinak lekérési végpont tesztek
+│   │   ├── test_login.py                           # Bejelentkezési végpont tesztek
+│   │   ├── test_logout.py                          # Kijelentkezési végpont tesztek
+│   │   ├── test_pothole_confirmation.py            # Kátyú detektálásának megerősítési végpoint tesztek
+│   │   ├── test_pothole.py                         # Kátyú létrehozása, módosítása, törlése végpont tesztek
+│   │   ├── test_registration.py                    # Regisztrációs végpont tesztek
+│   │   └── test_upload_frame.py                    # Úti képfeltöltés (kátyú detektálásra) végpont tesztek
+|   ├── uploaded_frames/                            # Feltöltött képek
+|   │   └── confirmed/                              # Feltöltött és kátyú detektációval rendelkező képek
+|   ├── utils/                                      # Segédeszközök
+|   |   ├── auth.py                                 # Hitelesítési (token kezelés) segédeszköz
+|   |   └── logger.py                               # Naplózási segédeszköz
+|   ├── yolov9/                                     # Az objektum (kátyú) detektáló AI könyvtára
+|   |   ├──hyps/                                    # A yolov9 hiper paraméterei
+|   |   |   └──hyp.scratch-high.yaml                # A yolov9 hiper paramétereit tartalmazó fájl
+|   |   ├── daemon_detect.py                        # A yolov9 objektum (kátyú) detektáló háttér folyamata
+|   |   ├── detect.py                               # A yolov9 kátyú detektálására használt indító fájl
+|   |   ├── pothole_dataset.yaml.py                 # A yolov9 tanítási paraméterei
+|   |   ├── requirements.yaml.py                    # A yolov9 python csomagok listája
+|   |   └──runs/                                    # A yolov9 futtatásainak eredmény könyvtára
+|   |   |   ├──train/                               # A yolov9 betanítási könyvtára
+|   |   |   |   ├──yolov9-c-200-new/                # A yolov9 kátyúkra betanításának az eredmény könyvtára
+|   |   |   |   |   ├──weights/                     # A yolov9 kátyúk felismerésére tanításának súlyai
+|   |   |   |   |   |   ├──best.pt                  # A yolov9 betanításának legjobb eredménye (súlyai)
+|   |   |   |   |   |   └──last.pt                  # A yolov9 betanításának legutolsó eredménye (súlyai)
+|   ├── config.py                                   # Konfigurációs beállítások
+|   ├── requirements.txt                            # Python csomagok listája
+|   ├── README.md                                   # Projekthez kapcsolódó információk
+|   ├── server.log                                  # Szerver naplózási fájla
+|   └── server.py                                   # Szerver alkalmazás indítási fájlja

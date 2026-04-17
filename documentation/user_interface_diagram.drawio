@@ -1,0 +1,187 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" version="24.9.1">
+  <diagram name="Page-1" id="ykm9pwOx-kW9dZdJwGxz">
+    <mxGraphModel dx="1434" dy="1949" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-3" value="Login Screen" style="rounded=0;whiteSpace=wrap;html=1;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="490" y="-30" width="130" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-12" value="Register button" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=15;" edge="1" parent="1" source="5SrZw1uTnRA9-oTPzAOq-4" target="5SrZw1uTnRA9-oTPzAOq-6">
+          <mxGeometry x="-0.1628" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-14" value="Login success" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;fontSize=15;" edge="1" parent="1" source="5SrZw1uTnRA9-oTPzAOq-4" target="5SrZw1uTnRA9-oTPzAOq-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-4" value="&lt;font&gt;&amp;nbsp;- Username field&lt;br&gt;&amp;nbsp;- Password field&lt;br&gt;&amp;nbsp;- Login button&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="490" y="10" width="130" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-5" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="490" y="70" width="130" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-6" value="Registration Screen" style="rounded=0;whiteSpace=wrap;html=1;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="220" y="120" width="270" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-13" value="Back to Login or Registration success" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;fontSize=15;" edge="1" parent="1" source="5SrZw1uTnRA9-oTPzAOq-7" target="5SrZw1uTnRA9-oTPzAOq-5">
+          <mxGeometry x="0.5556" y="-7" relative="1" as="geometry">
+            <mxPoint x="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-7" value="&lt;div&gt;&amp;nbsp; - Username, Name, Password fields&lt;/div&gt;&lt;div&gt;&amp;nbsp; - Confirm Password field&lt;/div&gt;&lt;div&gt;&amp;nbsp; - Email and Phone fields&lt;/div&gt;&lt;div&gt;&amp;nbsp; - Register button&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="220" y="160" width="270" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-8" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="220" y="250" width="270" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-9" value="Home Screen" style="rounded=0;whiteSpace=wrap;html=1;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="680" y="100" width="280" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-10" value="&lt;div&gt;&amp;nbsp; - &quot;Welcome&quot; text&lt;/div&gt;&lt;div&gt;&amp;nbsp; - &quot;Pothole Detector&quot; title&lt;/div&gt;&lt;div&gt;&amp;nbsp; - Navigation buttons to Map/Camera&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="680" y="140" width="280" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-20" value="Navigate to map" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontSize=15;" edge="1" parent="1" source="5SrZw1uTnRA9-oTPzAOq-11" target="5SrZw1uTnRA9-oTPzAOq-15">
+          <mxGeometry x="0.1429" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-29" value="Navigate to camera" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=15;" edge="1" parent="1" source="5SrZw1uTnRA9-oTPzAOq-11" target="5SrZw1uTnRA9-oTPzAOq-26">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-11" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="680" y="210" width="280" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-18" value="Navigate to home" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;fontSize=15;" edge="1" parent="1" source="5SrZw1uTnRA9-oTPzAOq-15" target="5SrZw1uTnRA9-oTPzAOq-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-15" value="Map Screen" style="rounded=0;whiteSpace=wrap;html=1;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="330" y="320" width="260" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-16" value="&lt;div&gt;&amp;nbsp; - Google Map&lt;/div&gt;&lt;div&gt;&amp;nbsp; - Pothole markers&lt;/div&gt;&lt;div&gt;&amp;nbsp; - Long-press to add a new pothole&lt;/div&gt;&lt;div&gt;&amp;nbsp; - Role-based editing/deletion&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="330" y="360" width="260" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-24" value="On marker tap" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;fontSize=15;" edge="1" parent="1" source="5SrZw1uTnRA9-oTPzAOq-17" target="5SrZw1uTnRA9-oTPzAOq-21">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-17" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="330" y="440" width="260" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-25" value="Confirm or Cancel" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=0;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;fontSize=15;" edge="1" parent="1" source="5SrZw1uTnRA9-oTPzAOq-21" target="5SrZw1uTnRA9-oTPzAOq-17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-21" value="Map Confirmation Dialog" style="rounded=0;whiteSpace=wrap;html=1;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="330" y="520" width="260" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-22" value="&lt;div&gt;&amp;nbsp; - Pothole detection confirmation&lt;/div&gt;&lt;div&gt;&amp;nbsp; - &quot;Yes&quot; / &quot;No&quot; buttons&lt;/div&gt;&lt;div&gt;&amp;nbsp; - Cancel button&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="330" y="560" width="260" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-23" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="330" y="620" width="260" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-26" value="Camera Screen" style="rounded=0;whiteSpace=wrap;html=1;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="740" y="360" width="220" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-27" value="&lt;div&gt;&amp;nbsp; - Camera preview&lt;/div&gt;&lt;div&gt;&amp;nbsp; - Capture and upload frames&lt;/div&gt;&lt;div&gt;&amp;nbsp; - Frame processing with AI&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="740" y="400" width="220" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-28" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="740" y="460" width="220" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-30" value="Navigate to home" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;fontSize=15;" edge="1" parent="1" source="5SrZw1uTnRA9-oTPzAOq-26" target="5SrZw1uTnRA9-oTPzAOq-10">
+          <mxGeometry x="0.2874" y="40" relative="1" as="geometry">
+            <mxPoint x="570" y="320" as="sourcePoint" />
+            <mxPoint x="760" y="230" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-31" value="Navigate to map" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;fontSize=15;" edge="1" parent="1" source="5SrZw1uTnRA9-oTPzAOq-26" target="5SrZw1uTnRA9-oTPzAOq-16">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="830" y="230" as="sourcePoint" />
+            <mxPoint x="580" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-32" value="Navigate to camera" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=15;" edge="1" parent="1" source="5SrZw1uTnRA9-oTPzAOq-16" target="5SrZw1uTnRA9-oTPzAOq-27">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="510" y="330" as="sourcePoint" />
+            <mxPoint x="760" y="230" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-33" value="Camera Detection Confirmation Dialog" style="rounded=0;whiteSpace=wrap;html=1;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="690" y="550" width="280" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-34" value="&lt;div&gt;&amp;nbsp; - Display detected pothole by AI&lt;/div&gt;&lt;div&gt;&amp;nbsp; - &quot;Confirm&quot; or &quot;Cancel&quot; detection&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="690" y="600" width="280" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-35" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="690" y="650" width="280" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-37" value="AI detects pothole, prompts user" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=0;fontSize=15;" edge="1" parent="1" source="5SrZw1uTnRA9-oTPzAOq-28" target="5SrZw1uTnRA9-oTPzAOq-33">
+          <mxGeometry x="0.6923" y="20" relative="1" as="geometry">
+            <mxPoint x="750" y="390" as="sourcePoint" />
+            <mxPoint x="580" y="390" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-38" value="Pothole Edit Dialog" style="rounded=0;whiteSpace=wrap;html=1;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="98" y="320" width="196" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-36" value="Confirm or Cancel detection" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=1;entryDx=0;entryDy=0;fontSize=15;" edge="1" parent="1" source="5SrZw1uTnRA9-oTPzAOq-33" target="5SrZw1uTnRA9-oTPzAOq-28">
+          <mxGeometry x="0.5" y="70" relative="1" as="geometry">
+            <mxPoint x="510" y="330" as="sourcePoint" />
+            <mxPoint x="760" y="230" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-39" value="&lt;div&gt;&amp;nbsp; - Pothole details&lt;/div&gt;&lt;div&gt;&amp;nbsp; - Save, Cancel, or Delete&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="98" y="360" width="196" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-40" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="98" y="410" width="196" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-41" value="Save, delete, or cancel and return to map" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=15;" edge="1" parent="1" source="5SrZw1uTnRA9-oTPzAOq-38" target="5SrZw1uTnRA9-oTPzAOq-15">
+          <mxGeometry x="-1" y="50" relative="1" as="geometry">
+            <mxPoint x="510" y="330" as="sourcePoint" />
+            <mxPoint x="760" y="230" as="targetPoint" />
+            <mxPoint x="-30" y="10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-42" value="On marker long-press" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;fontSize=15;" edge="1" parent="1" source="5SrZw1uTnRA9-oTPzAOq-16" target="5SrZw1uTnRA9-oTPzAOq-40">
+          <mxGeometry x="1" y="49" relative="1" as="geometry">
+            <mxPoint x="370" y="530" as="sourcePoint" />
+            <mxPoint x="370" y="460" as="targetPoint" />
+            <mxPoint x="-43" y="-26" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-43" value="Logout Logic" style="rounded=0;whiteSpace=wrap;html=1;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="690" y="720" width="330" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-44" value="&lt;div&gt;&amp;nbsp; - Automatic logout on invalid token detection&lt;/div&gt;&lt;div&gt;&amp;nbsp; - Manual logout option&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="690" y="760" width="330" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-45" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="690" y="810" width="330" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-46" value="Logout button" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.924;entryY=-0.075;entryDx=0;entryDy=0;fontSize=15;entryPerimeter=0;" edge="1" parent="1" source="5SrZw1uTnRA9-oTPzAOq-9" target="5SrZw1uTnRA9-oTPzAOq-43">
+          <mxGeometry x="0.8882" y="-35" relative="1" as="geometry">
+            <mxPoint x="980" y="380" as="sourcePoint" />
+            <mxPoint x="970" y="203" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-47" value="Invalid token detected" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;fontSize=15;" edge="1" parent="1" source="5SrZw1uTnRA9-oTPzAOq-35" target="5SrZw1uTnRA9-oTPzAOq-43">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="750" y="480" as="sourcePoint" />
+            <mxPoint x="700" y="560" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5SrZw1uTnRA9-oTPzAOq-48" value="Invalid token detected" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=15;" edge="1" parent="1" source="5SrZw1uTnRA9-oTPzAOq-23" target="5SrZw1uTnRA9-oTPzAOq-43">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="770" y="670" as="sourcePoint" />
+            <mxPoint x="813" y="760" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

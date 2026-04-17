@@ -14,9 +14,12 @@ from routes.get_detection_confirmation import get_detection_confirmation_bp
 from flask_jwt_extended import JWTManager
 #from hypercorn.middleware import AsyncioWSGIMiddleware
 
+# Setup config parameters
 app = Flask(__name__)
 app.config['JWT_SECRET_KEY'] = JWT_SECRET_KEY
 app.config['JWT_ALGORITHM'] = JWT_ALGORITHM
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = JWT_ACCESS_TOKEN_EXPIRES
+app.config['JWT_REFRESH_TOKEN_EXPIRES'] = JWT_REFRESH_TOKEN_EXPIRES
 jwt = JWTManager(app)
 
 # Register blueprints

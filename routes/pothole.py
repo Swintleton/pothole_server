@@ -73,7 +73,7 @@ def add_pothole():
                                         uploaded_image_gps_location_longitude) 
             VALUES (%s, %s, NOW(), NOW(), 3, %s, %s)
             RETURNING uploaded_image_id
-        """, (user_id, filename, latitude, longitude))  # Use real user_id and default values
+        """, (user_id, filename, latitude, longitude))
         
         pothole_id = cursor.fetchone()[0]
         conn.commit()

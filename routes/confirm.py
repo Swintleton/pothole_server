@@ -64,7 +64,7 @@ def confirm_detection():
                 DetectionService.delete_image_and_record(image_id, filename)
                 return jsonify({'message': 'Detection rejected and deleted'}), 200
         else:
-            logger.error(f"Error 'Image not found: {filename}")
+            logger.error(f"Error Image not found: {filename}")
             return jsonify({'error': 'Image not found'}), 404
 
     except Exception as e:

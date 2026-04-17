@@ -1,0 +1,19 @@
+# requirements
+# Usage: pip install -r requirements.txt
+
+# Base ------------------------------------------------------------------------
+flask==3.0.3
+flask-cors==5.0.0
+flask-jwt-extended==4.6.0
+psycopg2-binary==2.9.9
+torch==1.10.0+cu113
+torchvision==0.11.0+cu113
+ultralytics==8.2.4
+opencv-python==4.9.0
+Pillow==10.4.0
+numpy==1.24.4
+tqdm==4.66.2
+pyyaml==6.0.1
+requests==2.31.0
+pandas==2.0.3
+matplotlib==3.7.3
