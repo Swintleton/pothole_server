@@ -1,80 +1,85 @@
 # Road Defect Mapping
 
-This project focuses on the development of an artificial intelligence-based object detection system capable of automatically analyzing videos and images to identify road defects such as potholes.
-
-The system records the GPS coordinates of the detected road defects and stores them in a central database. Using the data collected in this database, the system can display the exact locations of road defects on a map, enabling more efficient planning and execution of road maintenance and repair work.
+This project presents a road defect mapping system built around artificial intelligence, a mobile client, and a server-side backend. Its goal is to detect potholes and other road defects from images and video frames, store their GPS coordinates in a central database, and display them on a map to support faster and more effective maintenance planning.
 
 ## Documentation
 
-Complete documentation can be found in the [`documentation`](./documentation) folder.
+Complete project documentation is available in the [`documentation`](./documentation) folder.
 
-For a more detailed English description of the full project, see the complete documentation here:
+For the detailed English documentation, see:
 [`documentation_english.pdf`](https://github.com/Swintleton/pothole_server/blob/main/documentation/documentation_english.pdf)
+
+A projekt részletesebb magyar nyelvű leírása itt érhető el:
+[`documentation_hungarian_original.pdf`](https://github.com/Swintleton/pothole_server/blob/main/documentation/documentation_hungarian_original.pdf)
 
 ## Table of Contents
 
 1. [Pothole Detection Server](#pothole-detection-server)
 2. [What I Built](#what-i-built)
-3. [Tech Stack](#tech-stack)
-4. [Features](#features)
-5. [Requirements](#requirements)
-6. [Installation](#installation)
-7. [Usage](#usage)
-8. [Endpoints](#endpoints)
-9. [Troubleshooting and FAQ](#troubleshooting-and-faq)
+3. [Architecture](#architecture)
+4. [Tech Stack](#tech-stack)
+5. [Features](#features)
+6. [Development Setup](#development-setup)
+7. [Running the Server](#running-the-server)
+8. [API Overview](#api-overview)
+9. [Testing and Logging](#testing-and-logging)
 10. [Magyar változat](#magyar-változat)
 
 ---
 
 # Pothole Detection Server
 
-This repository contains the Flask-based server application for the pothole detection system. It supports image processing, data management, user authentication, coordinate handling, and user confirmation workflows.
+This repository contains the Flask-based backend of the Road Defect Mapping project. The server handles authentication, image upload, pothole-related data storage, map data retrieval, and the confirmation workflow for AI detections.
 
 ## What I Built
 
-I built this project myself as part of a larger road defect mapping system.
+I built this project myself as part of my thesis work.
 
-The server is responsible for:
+Within the full road defect mapping system, this repository is responsible for:
 
-- authenticating users and handling access control,
-- receiving uploaded images from the client application,
-- running pothole detection-related processing,
-- storing and editing pothole coordinates in a PostgreSQL database,
+- authenticating users and handling role-based access,
+- receiving uploaded image frames from the mobile client,
+- storing pothole coordinates and related image metadata,
 - serving pothole data for map-based visualization,
-- and handling user confirmations for detected potholes.
+- processing confirmation workflows for AI-detected potholes,
+- and supporting the detection pipeline used by the background detection daemon.
+
+## Architecture
+
+The full solution follows a client-server architecture:
+
+- **Client:** a Flutter mobile application used for login, map interaction, camera capture, and detection confirmation
+- **Server:** a Flask application that exposes HTTP endpoints and business logic
+- **Database:** PostgreSQL for users, uploaded images, detection state, and pothole coordinates
+- **Detection layer:** a YOLO-based background process that monitors uploaded frames and processes them separately from the web server
 
 ## Tech Stack
 
-The project uses the following stack:
-
-- **Backend / API**: Flask, Flask-CORS, Flask-JWT-Extended
-- **Database**: PostgreSQL, psycopg2-binary
-- **Machine Learning / Detection**: PyTorch, Torchvision, Ultralytics YOLO
-- **Image Processing**: OpenCV, Pillow
-- **Data Handling**: NumPy, Pandas
-- **Visualization / Utilities**: Matplotlib, tqdm, PyYAML, Requests
+- **Backend / API:** Flask, Flask-CORS, Flask-JWT-Extended
+- **Database:** PostgreSQL, psycopg2-binary
+- **Machine Learning / Detection:** PyTorch, Torchvision, Ultralytics YOLO
+- **Image Processing:** OpenCV, Pillow
+- **Data Handling / Utilities:** NumPy, Pandas, Requests, PyYAML, tqdm
+- **Visualization / Training Support:** Matplotlib
 
 ## Features
 
-- User authentication and role management for administrators and general users.
-- Image upload from the client-side application.
-- Processing of image-based pothole detection.
-- Saving and editing the coordinates of pothole locations.
-- Handling user confirmations for detected pothole locations.
+- User authentication and JWT-based access control
+- Role handling for regular users and admins
+- Frame upload with GPS coordinates from the mobile client
+- Storage and retrieval of pothole coordinates
+- Manual pothole creation and pothole editing
+- Detection confirmation workflow for AI-processed images
+- Image and detection state handling for uploaded frames
+- Integration with a background detection daemon
 
-## Requirements
-
-- Python 3.8 or later
-- PostgreSQL database
-- Required Python packages listed in the `requirements.txt` file
-
-## Installation
+## Development Setup
 
 1. **Clone the repository**
 
    ```bash
-   git clone <repository-url>
-   cd server
+   git clone https://github.com/Swintleton/pothole_server.git
+   cd pothole_server
    ```
 
 2. **Create a virtual environment and install dependencies**
@@ -85,78 +90,74 @@ The project uses the following stack:
    pip install -r requirements.txt
    ```
 
-3. **Set up the database**
-   Create a PostgreSQL database and load the database schema:
-
-   ```sql
-   CREATE DATABASE pothole_detection;
-   \c pothole_detection
-   -- Load the database schema if a corresponding .sql file is provided
-   ```
-
-4. **Configure environment variables**
-   Modify `config.py`, or create a `.env` file in the project root and define the following environment variables:
-
-   ```plaintext
-   FLASK_ENV=production
-   DATABASE_URL=postgresql://<username>:<password>@localhost:5432/pothole_detection
-   SECRET_KEY=<secret_key>
-   ```
-
-5. **Run the server**
-   Use the following command to start the server:
+   Optional Anaconda-based setup:
 
    ```bash
-   python server.py
+   conda create -n pothole-detector python=3.8
+   conda activate pothole-detector
+   pip install -r requirements.txt
    ```
 
-## Usage
+3. **Set up PostgreSQL**
 
-The server runs on `localhost:5000`. The client-side application communicates with this server so users can log in, upload images, display pothole locations, and confirm detections.
+   Create your PostgreSQL database, then load the schema from `server/db_changes.sql`.
 
-## Endpoints
+   Example development setup used in the thesis:
 
-### Authentication Endpoints
+   - Database name: `pothole`
+   - User: `postgres`
+   - Password: `123456`
 
-- **POST /login**: User login  
-  - **Request body**: `{ "username": "user", "password": "pass" }`
-  - **Response**: A JWT token on successful login
+4. **Configure the application**
 
-- **POST /logout**: User logout  
-  - Invalidates the token
+   Update your configuration to match your local environment. For example, set the database connection and secret key in your config or environment variables.
 
-### Image Upload Endpoint
+## Running the Server
 
-- **POST /upload_frame**: Upload an image from the client to the server  
-  - **Request body**: File and coordinates (`latitude`, `longitude`)
-  - **Response**: `200 OK` if processing is successful
+Start the Flask application:
 
-### Pothole Data Endpoints
+```bash
+python server.py
+```
 
-- **GET /potholes**: Retrieve all pothole coordinates and related information  
-  - **Response**: A list of potholes in JSON format
+Start the detection daemon in a separate terminal:
 
-- **POST /add_pothole**: Add a new pothole manually  
-  - **Request body**: `{ "latitude": <lat>, "longitude": <long> }`
+```bash
+cd server/yolov9
+python daemon_detect.py
+```
 
-- **PUT /edit_pothole/<id>**: Edit an existing pothole entry  
-  - **Request body**: New coordinates and/or filenames
+The detection daemon is responsible for watching incoming uploaded frames and processing pothole detections in the background.
 
-### Confirmation Endpoint
+## API Overview
 
-- **POST /confirm**: User confirmation for a detected pothole  
-  - **Request body**: `{ "filename": "example.jpg", "confirmed": true }`
+Core endpoints used by the system:
 
-## Troubleshooting and FAQ
+### Authentication
 
-- **Error**: `ModuleNotFoundError`  
-  - **Solution**: Make sure all required packages are installed using `pip install -r requirements.txt`.
+- `POST /login`
+- `POST /register`
+- `POST /logout`
 
-- **Error**: `psycopg2.errors.UndefinedTable`  
-  - **Solution**: Check whether the database has been initialized properly and whether the tables were created.
+### Image upload and detection
 
-- **Error**: Flask does not start  
-  - **Solution**: Verify that all required environment variables are correctly set in the `.env` file and that `SECRET_KEY` is strong and unique.
+- `POST /upload_frame`
+- `GET /get_detection_confirmation`
+- `GET /get_detected_image/<filename>`
+- `POST /confirm`
+
+### Pothole management
+
+- `GET /potholes`
+- `POST /add_pothole`
+- `PUT /edit_pothole/<id>`
+- `DELETE /delete_pothole/<id>`
+
+## Testing and Logging
+
+The thesis documentation describes unit and process-level tests for authentication, upload handling, pothole CRUD operations, and confirmation flows.
+
+The server also writes logs not only to standard output but to `server/server.log` as well.
 
 ---
 
@@ -164,13 +165,14 @@ The server runs on `localhost:5000`. The client-side application communicates wi
 
 # Közúti hibák feltérképezése
 
-A projekt egy mesterséges intelligencián alapuló objektumdetektáló rendszer fejlesztésével foglalkozik, amely képes videófelvételek és képek automatikus elemzésére úthibák, például kátyúk azonosítására.
-
-A rendszer a detektált úthibák GPS-koordinátáit rögzíti, majd ezeket egy központi adatbázisban gyűjti össze. Az adatbázis tartalmát felhasználva a rendszer térképen képes megjeleníteni az úthibák pontos helyzetét, lehetővé téve ezzel az útjavítási munkálatok hatékonyabb tervezését és végrehajtását.
+A projekt egy mesterséges intelligenciára, egy mobil kliensalkalmazásra és egy szerveroldali háttérrendszerre épülő közúti hibafeltérképező megoldást mutat be. A cél az, hogy képekből és videóképkockákból felismerje a kátyúkat és egyéb úthibákat, a GPS-koordinátáikat egy központi adatbázisban tárolja, majd térképen megjelenítse őket, ezzel támogatva a gyorsabb és hatékonyabb karbantartási tervezést.
 
 ## Dokumentáció
 
-A teljes dokumentáció a [`documentation`](./documentation) mappában található.
+A teljes projekt dokumentációja a [`documentation`](./documentation) mappában található.
+
+A részletes angol nyelvű dokumentáció itt érhető el:
+[`documentation_english.pdf`](https://github.com/Swintleton/pothole_server/blob/main/documentation/documentation_english.pdf)
 
 A projekt részletesebb magyar nyelvű leírása itt érhető el:
 [`documentation_hungarian_original.pdf`](https://github.com/Swintleton/pothole_server/blob/main/documentation/documentation_hungarian_original.pdf)
@@ -179,65 +181,69 @@ A projekt részletesebb magyar nyelvű leírása itt érhető el:
 
 1. [Kátyúfelismerő szerver](#kátyúfelismerő-szerver)
 2. [Mit készítettem](#mit-készítettem)
-3. [Technológiai stack](#technológiai-stack)
-4. [Funkciók](#funkciók)
-5. [Követelmények](#követelmények)
-6. [Telepítés](#telepítés)
-7. [Használat](#használat)
-8. [Végpontok](#végpontok)
-9. [Hibakeresés és gyakori kérdések](#hibakeresés-és-gyakori-kérdések)
+3. [Architektúra](#architektúra)
+4. [Technológiai stack](#technológiai-stack)
+5. [Funkciók](#funkciók)
+6. [Fejlesztői környezet](#fejlesztői-környezet)
+7. [A szerver indítása](#a-szerver-indítása)
+8. [API áttekintés](#api-áttekintés)
+9. [Tesztek és naplózás](#tesztek-és-naplózás)
 
 ---
 
 # Kátyúfelismerő szerver
 
-Ez a repository a kátyúfelismerő rendszer Flask-alapú szerveralkalmazását tartalmazza. A szerver képfeldolgozást, adatkezelést, felhasználói hitelesítést, koordinátakezelést és felhasználói visszaigazolási folyamatokat támogat.
+Ez a repository a Road Defect Mapping projekt Flask-alapú backendjét tartalmazza. A szerver hitelesítést, képfeltöltést, kátyúadat-kezelést, térképes adatlekérdezést és az AI által detektált találatok visszaigazolási folyamatát kezeli.
 
 ## Mit készítettem
 
-Ezt a projektet saját magam készítettem egy nagyobb közúti hibafeltérképező rendszer részeként.
+A projektet saját magam készítettem a szakdolgozatom részeként.
 
-A szerver feladatai:
+A teljes közúti hibafeltérképező rendszeren belül ez a repository felel a következőkért:
 
-- felhasználók hitelesítése és jogosultságkezelése,
-- képek fogadása a kliensalkalmazástól,
-- kátyúdetektáláshoz kapcsolódó feldolgozás futtatása,
-- a kátyúk koordinátáinak tárolása és szerkesztése PostgreSQL adatbázisban,
+- felhasználók hitelesítése és szerepköralapú jogosultságkezelése,
+- képkockák fogadása a mobil kliensalkalmazástól,
+- kátyúkoordináták és kapcsolódó képadatok tárolása,
 - térképes megjelenítéshez szükséges adatok kiszolgálása,
-- valamint a felhasználói visszaigazolások kezelése a detektált kátyúkhoz.
+- az AI által észlelt kátyúk visszaigazolási folyamatának kezelése,
+- valamint a háttérben futó detektáló daemon kiszolgálása.
+
+## Architektúra
+
+A teljes megoldás kliens-szerver architektúrát követ:
+
+- **Kliens:** Flutter alapú mobilalkalmazás bejelentkezéshez, térképes műveletekhez, kamerakép-feldolgozáshoz és visszaigazoláshoz
+- **Szerver:** Flask alkalmazás HTTP végpontokkal és üzleti logikával
+- **Adatbázis:** PostgreSQL a felhasználók, feltöltött képek, detektálási állapotok és kátyúkoordináták tárolására
+- **Detektáló réteg:** YOLO-alapú háttérfolyamat, amely a feltöltött képkockákat a webszervertől elkülönítve dolgozza fel
 
 ## Technológiai stack
 
-A projekt a következő technológiákat használja:
-
-- **Backend / API**: Flask, Flask-CORS, Flask-JWT-Extended
-- **Adatbázis**: PostgreSQL, psycopg2-binary
-- **Gépi tanulás / detektálás**: PyTorch, Torchvision, Ultralytics YOLO
-- **Képfeldolgozás**: OpenCV, Pillow
-- **Adatkezelés**: NumPy, Pandas
-- **Vizualizáció / segédkönyvtárak**: Matplotlib, tqdm, PyYAML, Requests
+- **Backend / API:** Flask, Flask-CORS, Flask-JWT-Extended
+- **Adatbázis:** PostgreSQL, psycopg2-binary
+- **Gépi tanulás / detektálás:** PyTorch, Torchvision, Ultralytics YOLO
+- **Képfeldolgozás:** OpenCV, Pillow
+- **Adatkezelés / segédkönyvtárak:** NumPy, Pandas, Requests, PyYAML, tqdm
+- **Vizualizáció / tréningtámogatás:** Matplotlib
 
 ## Funkciók
 
-- Felhasználó hitelesítés és szerepkörkezelés adminisztrátorok és általános felhasználók számára.
-- Képfeltöltés a kliensoldali alkalmazásból.
-- Kép alapú kátyúdetektálás feldolgozása.
-- Kátyúhelyzetek koordinátáinak mentése és szerkesztése.
-- Felhasználói visszaigazolások kezelése a detektált kátyúhelyekhez.
+- Felhasználó-hitelesítés és JWT alapú hozzáférés-kezelés
+- Szerepkörkezelés általános felhasználók és adminok számára
+- GPS-koordinátákkal ellátott képkockák fogadása a mobil klienstől
+- Kátyúkoordináták tárolása és lekérése
+- Kézi kátyúfelvitel és meglévő kátyúk szerkesztése
+- Visszaigazolási folyamat az AI által feldolgozott képekhez
+- Feltöltött képek és detektálási állapotok kezelése
+- Integráció a háttérben futó detektáló daemon folyamattal
 
-## Követelmények
-
-- Python 3.8 vagy újabb
-- PostgreSQL adatbázis
-- A szükséges Python csomagok a `requirements.txt` fájlban vannak megadva
-
-## Telepítés
+## Fejlesztői környezet
 
 1. **A repository klónozása**
 
    ```bash
-   git clone <repository-url>
-   cd server
+   git clone https://github.com/Swintleton/pothole_server.git
+   cd pothole_server
    ```
 
 2. **Virtuális környezet létrehozása és a függőségek telepítése**
@@ -248,75 +254,71 @@ A projekt a következő technológiákat használja:
    pip install -r requirements.txt
    ```
 
-3. **Adatbázis beállítása**  
-   Hozz létre egy PostgreSQL adatbázist, és töltsd be az adatbázis sémát:
-
-   ```sql
-   CREATE DATABASE pothole_detection;
-   \c pothole_detection
-   -- Töltsd be az adatbázis sémáját, ha van hozzá tartozó .sql fájl
-   ```
-
-4. **Környezetváltozók beállítása**  
-   Módosítsd a `config.py` fájlt, vagy hozz létre egy `.env` fájlt a projekt gyökerében, és add meg a következő környezetváltozókat:
-
-   ```plaintext
-   FLASK_ENV=production
-   DATABASE_URL=postgresql://<felhasználó>:<jelszó>@localhost:5432/pothole_detection
-   SECRET_KEY=<titkos_kulcs>
-   ```
-
-5. **Indítás**  
-   A szerver futtatásához használd a következő parancsot:
+   Opcionális Anaconda-alapú beállítás:
 
    ```bash
-   python server.py
+   conda create -n pothole-detector python=3.8
+   conda activate pothole-detector
+   pip install -r requirements.txt
    ```
 
-## Használat
+3. **PostgreSQL beállítása**
 
-A szerver a `localhost:5000` porton fut. A kliensoldali alkalmazás ezzel a szerverrel kommunikál, hogy a felhasználók bejelentkezzenek, képeket töltsenek fel, valamint megjelenítsék és megerősítsék a kátyúhelyzeteket.
+   Hozd létre a PostgreSQL adatbázist, majd töltsd be a sémát a `server/db_changes.sql` fájlból.
 
-## Végpontok
+   A szakdolgozatban használt példa fejlesztői beállítás:
 
-### Hitelesítési végpontok
+   - Adatbázis neve: `pothole`
+   - Felhasználó: `postgres`
+   - Jelszó: `123456`
 
-- **POST /login**: Felhasználói bejelentkezés  
-  - **Kérelmi törzs**: `{ "username": "user", "password": "pass" }`
-  - **Válasz**: Sikeres bejelentkezés esetén egy JWT token
+4. **Alkalmazás konfigurálása**
 
-- **POST /logout**: Kijelentkezés  
-  - A token érvénytelenítése
+   Állítsd be a konfigurációt a saját környezetednek megfelelően. Például add meg az adatbázis-kapcsolatot és a titkos kulcsot a konfigurációban vagy környezeti változókban.
 
-### Képfeltöltési végpont
+## A szerver indítása
 
-- **POST /upload_frame**: Kép feltöltése a kliensoldalról a szerverre  
-  - **Kérelmi törzs**: Fájl és koordináták (`latitude`, `longitude`)
-  - **Válasz**: `200 OK` státusz sikeres feldolgozás esetén
+A Flask alkalmazás indítása:
 
-### Kátyúadat-végpontok
+```bash
+python server.py
+```
 
-- **GET /potholes**: Az összes kátyú koordinátájának és információjának lekérése  
-  - **Válasz**: Kátyúk listája JSON formátumban
+A detektáló daemon indítása külön terminálban:
 
-- **POST /add_pothole**: Új kátyú manuális hozzáadása  
-  - **Kérelmi törzs**: `{ "latitude": <lat>, "longitude": <long> }`
+```bash
+cd server/yolov9
+python daemon_detect.py
+```
 
-- **PUT /edit_pothole/<id>**: Meglévő kátyú adatainak szerkesztése  
-  - **Kérelmi törzs**: Új koordináták és/vagy fájlnevek
+A detektáló daemon feladata, hogy figyelje a beérkező képkockákat, és a háttérben feldolgozza a kátyúdetektálást.
 
-### Visszaigazolási végpont
+## API áttekintés
 
-- **POST /confirm**: Felhasználói visszaigazolás egy detektált kátyúról  
-  - **Kérelmi törzs**: `{ "filename": "example.jpg", "confirmed": true }`
+A rendszer főbb végpontjai:
 
-## Hibakeresés és gyakori kérdések
+### Hitelesítés
 
-- **Hiba**: `ModuleNotFoundError`  
-  - **Megoldás**: Győződj meg arról, hogy az összes szükséges csomag telepítve van a `pip install -r requirements.txt` paranccsal.
+- `POST /login`
+- `POST /register`
+- `POST /logout`
 
-- **Hiba**: `psycopg2.errors.UndefinedTable`  
-  - **Megoldás**: Ellenőrizd, hogy az adatbázis megfelelően inicializálva van-e, és a táblák létrejöttek-e.
+### Képfeltöltés és detektálás
 
-- **Hiba**: A Flask nem indul el  
-  - **Megoldás**: Ellenőrizd, hogy a `.env` fájlban minden szükséges környezetváltozó megfelelően van beállítva, és hogy a `SECRET_KEY` erős és egyedi.
+- `POST /upload_frame`
+- `GET /get_detection_confirmation`
+- `GET /get_detected_image/<filename>`
+- `POST /confirm`
+
+### Kátyúkezelés
+
+- `GET /potholes`
+- `POST /add_pothole`
+- `PUT /edit_pothole/<id>`
+- `DELETE /delete_pothole/<id>`
+
+## Tesztek és naplózás
+
+A szakdolgozat dokumentációja egységteszteket és teljes folyamatokat szimuláló teszteket is ismertet a hitelesítéshez, a képfeltöltéshez, a kátyú CRUD műveletekhez és a visszaigazolási folyamathoz.
+
+A szerver a naplókat nemcsak a standard kimenetre írja, hanem a `server/server.log` fájlba is.
