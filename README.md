@@ -8,23 +8,51 @@ The system records the GPS coordinates of the detected road defects and stores t
 
 Complete documentation can be found in the [`documentation`](./documentation) folder.
 
+For a more detailed English description of the full project, see the complete documentation here:
+[`documentation_english.pdf`](https://github.com/Swintleton/pothole_server/blob/main/documentation/documentation_english.pdf)
+
 ## Table of Contents
 
 1. [Pothole Detection Server](#pothole-detection-server)
-2. [Features](#features)
-3. [Technologies](#technologies)
-4. [Requirements](#requirements)
-5. [Installation](#installation)
-6. [Usage](#usage)
-7. [Endpoints](#endpoints)
-8. [Troubleshooting and FAQ](#troubleshooting-and-faq)
-9. [Magyar változat](#magyar-változat)
+2. [What I Built](#what-i-built)
+3. [Tech Stack](#tech-stack)
+4. [Features](#features)
+5. [Requirements](#requirements)
+6. [Installation](#installation)
+7. [Usage](#usage)
+8. [Endpoints](#endpoints)
+9. [Troubleshooting and FAQ](#troubleshooting-and-faq)
+10. [Magyar változat](#magyar-változat)
 
 ---
 
 # Pothole Detection Server
 
-This project includes a Flask-based server application that supports the operation of a pothole detection system through image processing and data management. The server authenticates users, processes uploaded images, records map coordinates, and allows users to confirm detections.
+This repository contains the Flask-based server application for the pothole detection system. It supports image processing, data management, user authentication, coordinate handling, and user confirmation workflows.
+
+## What I Built
+
+I built this project myself as part of a larger road defect mapping system.
+
+The server is responsible for:
+
+- authenticating users and handling access control,
+- receiving uploaded images from the client application,
+- running pothole detection-related processing,
+- storing and editing pothole coordinates in a PostgreSQL database,
+- serving pothole data for map-based visualization,
+- and handling user confirmations for detected potholes.
+
+## Tech Stack
+
+The project uses the following stack:
+
+- **Backend / API**: Flask, Flask-CORS, Flask-JWT-Extended
+- **Database**: PostgreSQL, psycopg2-binary
+- **Machine Learning / Detection**: PyTorch, Torchvision, Ultralytics YOLO
+- **Image Processing**: OpenCV, Pillow
+- **Data Handling**: NumPy, Pandas
+- **Visualization / Utilities**: Matplotlib, tqdm, PyYAML, Requests
 
 ## Features
 
@@ -33,13 +61,6 @@ This project includes a Flask-based server application that supports the operati
 - Processing of image-based pothole detection.
 - Saving and editing the coordinates of pothole locations.
 - Handling user confirmations for detected pothole locations.
-
-## Technologies
-
-- **Backend**: Flask (Python-based web framework)
-- **Database**: PostgreSQL
-- **Image Processing**: OpenCV and Python Imaging Library (PIL)
-- **Authentication**: JSON Web Tokens (JWT)
 
 ## Requirements
 
@@ -151,22 +172,50 @@ A rendszer a detektált úthibák GPS-koordinátáit rögzíti, majd ezeket egy 
 
 A teljes dokumentáció a [`documentation`](./documentation) mappában található.
 
+A projekt részletesebb magyar nyelvű leírása itt érhető el:
+[`documentation_hungarian_original.pdf`](https://github.com/Swintleton/pothole_server/blob/main/documentation/documentation_hungarian_original.pdf)
+
 ## Tartalomjegyzék
 
 1. [Kátyúfelismerő szerver](#kátyúfelismerő-szerver)
-2. [Funkciók](#funkciók-1)
-3. [Technológiák](#technológiák-1)
-4. [Követelmények](#követelmények-1)
-5. [Telepítés](#telepítés-1)
-6. [Használat](#használat-1)
-7. [Végpontok](#végpontok-1)
-8. [Hibakeresés és gyakori kérdések](#hibakeresés-és-gyakori-kérdések-1)
+2. [Mit készítettem](#mit-készítettem)
+3. [Technológiai stack](#technológiai-stack)
+4. [Funkciók](#funkciók)
+5. [Követelmények](#követelmények)
+6. [Telepítés](#telepítés)
+7. [Használat](#használat)
+8. [Végpontok](#végpontok)
+9. [Hibakeresés és gyakori kérdések](#hibakeresés-és-gyakori-kérdések)
 
 ---
 
 # Kátyúfelismerő szerver
 
-Ez a projekt egy Flask-alapú szerveralkalmazást is tartalmaz, amely képfeldolgozással és adatkezeléssel támogatja egy kátyúfelismerő rendszer működését. A szerver hitelesíti a felhasználókat, feldolgozza a feltöltött képeket, rögzíti a térképes koordinátákat, és lehetővé teszi a felhasználók számára a detektálások visszaigazolását.
+Ez a repository a kátyúfelismerő rendszer Flask-alapú szerveralkalmazását tartalmazza. A szerver képfeldolgozást, adatkezelést, felhasználói hitelesítést, koordinátakezelést és felhasználói visszaigazolási folyamatokat támogat.
+
+## Mit készítettem
+
+Ezt a projektet saját magam készítettem egy nagyobb közúti hibafeltérképező rendszer részeként.
+
+A szerver feladatai:
+
+- felhasználók hitelesítése és jogosultságkezelése,
+- képek fogadása a kliensalkalmazástól,
+- kátyúdetektáláshoz kapcsolódó feldolgozás futtatása,
+- a kátyúk koordinátáinak tárolása és szerkesztése PostgreSQL adatbázisban,
+- térképes megjelenítéshez szükséges adatok kiszolgálása,
+- valamint a felhasználói visszaigazolások kezelése a detektált kátyúkhoz.
+
+## Technológiai stack
+
+A projekt a következő technológiákat használja:
+
+- **Backend / API**: Flask, Flask-CORS, Flask-JWT-Extended
+- **Adatbázis**: PostgreSQL, psycopg2-binary
+- **Gépi tanulás / detektálás**: PyTorch, Torchvision, Ultralytics YOLO
+- **Képfeldolgozás**: OpenCV, Pillow
+- **Adatkezelés**: NumPy, Pandas
+- **Vizualizáció / segédkönyvtárak**: Matplotlib, tqdm, PyYAML, Requests
 
 ## Funkciók
 
@@ -175,13 +224,6 @@ Ez a projekt egy Flask-alapú szerveralkalmazást is tartalmaz, amely képfeldol
 - Kép alapú kátyúdetektálás feldolgozása.
 - Kátyúhelyzetek koordinátáinak mentése és szerkesztése.
 - Felhasználói visszaigazolások kezelése a detektált kátyúhelyekhez.
-
-## Technológiák
-
-- **Backend**: Flask (Python alapú webes keretrendszer)
-- **Adatbázis**: PostgreSQL
-- **Képfeldolgozás**: OpenCV és Python Imaging Library (PIL)
-- **Autentikáció**: JSON Web Tokens (JWT)
 
 ## Követelmények
 
