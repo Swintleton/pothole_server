@@ -13,7 +13,7 @@ class Auth:
         try:
             verify_jwt_in_request()  # Verifies the JWT token
             user_id = get_jwt_identity()  # Extracts the user ID from the JWT
-            g.user_id = user_id
+            g.user_id = int(user_id)
             return True
         except Exception as e:
             print(f"Token verification failed: {e}")
@@ -31,7 +31,7 @@ class Auth:
             # If not already verified, manually extract the user ID from the token
             verify_jwt_in_request()  # Verifies the JWT token
             user_id = get_jwt_identity()  # Extracts the user ID from the JWT
-            return user_id
+            return int(user_id)
         except Exception as e:
             print(f"Error extracting user_id from token: {e}")
             return None

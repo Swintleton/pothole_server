@@ -22,12 +22,12 @@ CREATE TABLE "user" (
 	user_login varchar(64) NOT NULL,
 	user_password varchar(256) NOT NULL,
 	user_role_id int2 NOT NULL,
-	user_created_datetime timestamp NOT NULL,
+	user_created_datetime timestamp DEFAULT now(),
 	user_modified_datetime timestamp NULL,
 	user_auth_token TEXT NOT NULL,
 	user_email varchar(64) NOT NULL,
 	user_phone_number varchar(18) NULL,
-	ADD CONSTRAINT unique_user_email UNIQUE (user_email);
+	CONSTRAINT unique_user_email UNIQUE (user_email);
 	CONSTRAINT user_pk PRIMARY KEY (user_id)
 );
 CREATE TABLE user_role (

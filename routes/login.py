@@ -48,7 +48,7 @@ def login():
         # Verify the provided password with the stored hashed password
         if bcrypt.checkpw(password.encode('utf-8'), stored_password.encode('utf-8')):
             # Generate JWT token
-            access_token = create_access_token(identity=user_id)  # Return a JWT token
+            access_token = create_access_token(identity=str(user_id))  # Return a JWT token
             bearer_token = f"Bearer {access_token}"  # Add "Bearer " prefix
 
             # Update the user's auth token in the database
