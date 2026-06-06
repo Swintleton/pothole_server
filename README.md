@@ -8,7 +8,7 @@ The system records the GPS coordinates of the detected road defects and stores t
 
 Watch the project showcase:
 
-[![Road Defect Mapping showcase](./documentation/showcase-thumbnail.png)](./documentation/showcase.mp4)
+https://github.com/user-attachments/assets/0e4ac39e-3a23-4ccc-9071-b1f5f598c718
 
 ## Documentation
 
