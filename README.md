@@ -4,6 +4,12 @@ This project focuses on the development of an artificial intelligence-based obje
 
 The system records the GPS coordinates of the detected road defects and stores them in a central database. Using the data collected in this database, the system can display the exact locations of road defects on a map, enabling more efficient planning and execution of road maintenance and repair work.
 
+## Showcase
+
+Watch the project showcase:
+
+[![Road Defect Mapping showcase](./documentation/showcase-thumbnail.png)](./documentation/showcase.mp4)
+
 ## Documentation
 
 Complete documentation can be found in the [`documentation`](./documentation) folder.
